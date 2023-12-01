@@ -10,13 +10,13 @@ export const Navbar = () => {
         <h1>Quiziverse</h1>
       </Link>
       <div className={scss.search}>
-        <input type="text" placeholder='Search sourse'/>
-        <MdOutlineSearch className={scss.searchIcon}/>
+        <input type="text" placeholder="Search course" />
+        <MdOutlineSearch className={scss.searchIcon} />
       </div>
       <div className={scss.personal}>
         <button>EN</button>
         <div className={scss.profile}>
-          <MdOutlinePersonOutline className={scss.profileIcon}/>
+          <MdOutlinePersonOutline className={scss.profileIcon} />
         </div>
       </div>
     </nav>
