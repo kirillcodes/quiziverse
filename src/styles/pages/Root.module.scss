@@ -1,0 +1,19 @@
+:root {
+  background-color: #1c1c1c;
+  color: #eeeeee;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Rubik", sans-serif;
+  // outline: 1px solid red;
+
+  button {
+    color: #eeeeee;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+  }
+}
