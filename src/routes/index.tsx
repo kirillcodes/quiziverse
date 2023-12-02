@@ -1,5 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
-import { Root } from "@pages/Root";
+import { Root } from "@pages";
+import { Courses } from "@pages";
 
 export const router = createBrowserRouter([
   {
@@ -8,6 +9,7 @@ export const router = createBrowserRouter([
     children: [
       {
         index: true,
+        element: <Courses />,
       },
     ],
   },

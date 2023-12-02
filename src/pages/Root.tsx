@@ -1,12 +1,15 @@
 import { Outlet } from "react-router-dom";
-import { Navbar } from "@layouts/Navbar";
+import { Navbar } from "@layouts";
 import scss from "@styles/pages/Root.module.scss";
+import { Container } from "@components";
 
 export const Root = () => {
   return (
     <main className={scss.main}>
       <Navbar />
-      <Outlet />
+      <Container>
+        <Outlet />
+      </Container>
     </main>
   );
 };

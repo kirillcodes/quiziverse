@@ -1,6 +1,11 @@
 :root {
-  background-color: #1c1c1c;
+  background-color: #181b1f;
   color: #eeeeee;
+
+  --light-color: #5b7792;
+  --gray-color: #bababa;
+  --bg-color: #22262b;
+  --accent-color: #2d3136;
 }
 
 * {
@@ -9,6 +14,7 @@
   box-sizing: border-box;
   font-family: "Rubik", sans-serif;
   font-size: 1rem;
+  font-weight: 400;
   // outline: 1px solid red;
 
   button {

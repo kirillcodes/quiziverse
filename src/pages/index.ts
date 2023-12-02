@@ -1,3 +1,2 @@
-import { Root } from "./Root";
-
-export { Root };
+export { Root } from "./Root";
+export { Courses } from "./Courses";
