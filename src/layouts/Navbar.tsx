@@ -1,12 +1,13 @@
 import scss from "@styles/layouts/Navbar.module.scss";
 import { MdOutlinePersonOutline, MdOutlineSearch } from "react-icons/md";
 import { Link } from "react-router-dom";
+import Logo from "../assets/images/logo-universe.png";
 
 export const Navbar = () => {
   return (
     <nav className={scss.navbar}>
       <Link to="/" className={scss.logo}>
-        <img src="./img/logo-university.png" alt="Quiziverse" />
+        <img src={Logo} alt="Quiziverse" />
         <h1>Quiziverse</h1>
       </Link>
       <div className={scss.search}>
