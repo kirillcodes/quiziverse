@@ -60,21 +60,15 @@ const authReducer = createSlice({
         isLoading: true,
       },
     }),
-    loadProfileSuccess: (
-      state,
-      action: PayloadAction<string>
-    ): AuthStateTypes => ({
+    loadProfileSuccess: (state, action: PayloadAction<string>): AuthStateTypes => ({
       ...state,
       profileData: {
+        ...state.profileData,
         profile: action.payload,
         isLoading: false,
-        error: action.payload,
       },
     }),
-    loadProfileFailure: (
-      state,
-      action: PayloadAction<string>
-    ): AuthStateTypes => ({
+    loadProfileFailure: (state, action: PayloadAction<string>): AuthStateTypes => ({
       ...state,
       profileData: {
         ...state.profileData,

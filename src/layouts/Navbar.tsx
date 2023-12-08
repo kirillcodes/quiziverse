@@ -1,7 +1,7 @@
 import scss from "@styles/layouts/Navbar.module.scss";
 import { MdOutlinePersonOutline, MdOutlineSearch } from "react-icons/md";
 import { Link } from "react-router-dom";
-import Logo from "../assets/images/logo-universe.png";
+import Logo from "@assets/images/logo-universe.png";
 
 export const Navbar = () => {
   return (

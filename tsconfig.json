@@ -38,8 +38,8 @@
       "@assets": [
         "src/assets"
       ],
-      "@auth": [
-        "src/auth"
+      "@api": [
+        "src/api"
       ]
     },
     /* Bundler mode */
@@ -56,7 +56,8 @@
     "noFallthroughCasesInSwitch": true
   },
   "include": [
-    "src"
+    "src",
+    "env.d.ts"
   ],
   "references": [
     {
