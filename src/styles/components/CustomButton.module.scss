@@ -5,4 +5,9 @@
   border-radius: 5px;
   outline: none;
   font-weight: 300;
+  transition: all 0.1s ease-in-out;
+
+  &:hover {
+    background-color: #4d6881;
+  }
 }
