@@ -1,18 +1,47 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { CustomInput } from "@components";
-import Logo from "@assets/images/logo-universe.png";
-
-import scss from "@styles/pages/Auth.module.scss";
 import { CustomButton } from "@components/CustomButton";
+import { useAppDispatch } from "@hooks/useAppDispatch";
+import { loginUser, registerUser } from "@store/auth/actionCreators";
+
+import Logo from "@assets/images/logo-universe.png";
+import scss from "@styles/pages/Auth.module.scss";
+import { useAppSelector } from "@hooks/useAppSelector";
 
 export const Auth: React.FC = () => {
-  const emailDomain: string = import.meta.env.VITE_STUDENT_EMAIL_DOMAIN;
+  const dispatch = useAppDispatch();
+  const registered = useAppSelector((state) => state.auth.registerData.registered);
 
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [authMethod, setAuthMethod] = useState("login");
 
-  const handleChoiceMethod = (method: string) => {
+  const emailDomain: string = import.meta.env.VITE_STUDENT_EMAIL_DOMAIN;
+
+  const handleEmailInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(e.target.value);
+  };
+
+  const handlePasswordInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPassword(e.target.value);
+  };
+
+  const handleAuthMethod = (method: string) => {
     setAuthMethod(method);
   };
+
+  const handleAuthSubmit = () => {
+    if (authMethod === "login") {
+      dispatch(loginUser({ email, password }));
+    } else if (authMethod === "register") {
+      dispatch(registerUser({ email, password }));
+      if (registered) setAuthMethod("login");
+    }
+  };
+
+  useEffect(() => {
+    if (registered) setAuthMethod("login");
+  }, [registered]);
 
   return (
     <div className={scss.auth}>
@@ -21,14 +50,14 @@ export const Auth: React.FC = () => {
         <h1>Authorization</h1>
         <div className={scss.choiceMethod}>
           <div
-            onClick={() => handleChoiceMethod("login")}
+            onClick={() => handleAuthMethod("login")}
             style={authMethod === "login" ? { backgroundColor: "var(--light-color)" } : {}}
           >
             Login
           </div>
           <div
-            onClick={() => handleChoiceMethod("registration")}
-            style={authMethod === "registration" ? { backgroundColor: "var(--light-color)" } : {}}
+            onClick={() => handleAuthMethod("register")}
+            style={authMethod === "register" ? { backgroundColor: "var(--light-color)" } : {}}
           >
             Registration
           </div>
@@ -38,10 +67,20 @@ export const Auth: React.FC = () => {
           <CustomInput
             type="email"
             placeholder={`kirillcodes@${emailDomain ? emailDomain : "quiziverse.com"}`}
+            value={email}
+            handleInput={handleEmailInput}
           />
           <h3>Password:</h3>
-          <CustomInput type="password" placeholder="••••••••••" />
-          <CustomButton title={authMethod === "login" ? "Sign-In" : "Sign-Up"} />
+          <CustomInput
+            type="password"
+            placeholder="••••••••••"
+            value={password}
+            handleInput={handlePasswordInput}
+          />
+          <CustomButton
+            title={authMethod === "login" ? "Sign-In" : "Sign-Up"}
+            handleSubmit={handleAuthSubmit}
+          />
         </form>
       </div>
     </div>

@@ -1,7 +1,12 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 type AuthStateTypes = {
-  authData: {
+  registerData: {
+    registered: boolean;
+    isLoading: boolean;
+    error: string | null;
+  };
+  loginData: {
     accessToken: string | null;
     isLoading: boolean;
     error: string | null;
@@ -14,7 +19,12 @@ type AuthStateTypes = {
 };
 
 const initialState: AuthStateTypes = {
-  authData: {
+  registerData: {
+    registered: false,
+    isLoading: false,
+    error: null,
+  },
+  loginData: {
     accessToken: null,
     isLoading: false,
     error: null,
@@ -30,16 +40,39 @@ const authReducer = createSlice({
   name: "auth",
   initialState,
   reducers: {
+    registerStart: (state): AuthStateTypes => ({
+      ...state,
+      registerData: {
+        ...state.registerData,
+        isLoading: true,
+      },
+    }),
+    registerSuccess: (state): AuthStateTypes => ({
+      ...state,
+      registerData: {
+        registered: true,
+        isLoading: false,
+        error: null,
+      },
+    }),
+    registerFailure: (state, action: PayloadAction<string>): AuthStateTypes => ({
+      ...state,
+      registerData: {
+        registered: false,
+        isLoading: false,
+        error: action.payload,
+      },
+    }),
     loginStart: (state): AuthStateTypes => ({
       ...state,
-      authData: {
-        ...state.authData,
+      loginData: {
+        ...state.loginData,
         isLoading: true,
       },
     }),
     loginSuccess: (state, action: PayloadAction<string>): AuthStateTypes => ({
       ...state,
-      authData: {
+      loginData: {
         accessToken: action.payload,
         isLoading: false,
         error: null,
@@ -47,8 +80,8 @@ const authReducer = createSlice({
     }),
     loginFailure: (state, action: PayloadAction<string>): AuthStateTypes => ({
       ...state,
-      authData: {
-        ...state.authData,
+      loginData: {
+        ...state.loginData,
         isLoading: false,
         error: action.payload,
       },
@@ -81,6 +114,9 @@ const authReducer = createSlice({
 });
 
 export const {
+  registerStart,
+  registerSuccess,
+  registerFailure,
   loginStart,
   loginSuccess,
   loginFailure,

@@ -1,10 +1,15 @@
-// import { AxiosPromise } from "axios";
+import { Endpoints } from "@api/endpoints";
+import { axiosInstance } from "@api/instance";
 
-// type LoginRequest = {
-//   login: string;
-//   password: string;
-// };
+type authRequest = {
+  email: string;
+  password: string;
+};
 
-// export const login = (params: LoginRequest): AxiosPromise<void> => {
-//   axiosInstance.post(Endpoints.AUTH.LOGIN, params);
-// };
+export const login = (params: authRequest) => {
+  return axiosInstance.post(Endpoints.AUTH.LOGIN, params);
+};
+
+export const register = (params: authRequest) => {
+  return axiosInstance.post(Endpoints.AUTH.REGISTER, params);
+};
