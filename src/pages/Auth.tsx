@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { CustomInput } from "@components";
+import { CustomInput, MessageError } from "@components";
 import { CustomButton } from "@components/CustomButton";
 import { useAppDispatch } from "@hooks/useAppDispatch";
 import { loginUser, registerUser } from "@store/auth/actionCreators";
-
+import { useAppSelector } from "@hooks/useAppSelector";
 import Logo from "@assets/images/logo-universe.png";
 import scss from "@styles/pages/Auth.module.scss";
-import { useAppSelector } from "@hooks/useAppSelector";
 
 export const Auth: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -14,28 +13,59 @@ export const Auth: React.FC = () => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
   const [authMethod, setAuthMethod] = useState("login");
 
-  const emailDomain: string = import.meta.env.VITE_STUDENT_EMAIL_DOMAIN;
+  const studentEmailDomain: string = import.meta.env.VITE_STUDENT_EMAIL_DOMAIN;
+  const teacherEmailDomain: string = import.meta.env.VITE_TEACHER_EMAIL_DOMAIN;
+
+  const emailRegex = new RegExp(
+    `^[^\\s@]+@(?:${studentEmailDomain.replace(".", "\\.")}|${teacherEmailDomain.replace(
+      ".",
+      "\\."
+    )})$`
+  );
 
   const handleEmailInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
+
+    if (e.target.value.length === 0) {
+      setEmailError("Email address cannot be empty");
+    } else if (!emailRegex.test(e.target.value)) {
+      setEmailError("Incorrect email address");
+    } else {
+      setEmailError("");
+    }
   };
 
   const handlePasswordInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value);
+
+    if (e.target.value.length <= 5) {
+      setPasswordError("Password must be at least 6 characters");
+    } else if (e.target.value.includes(" ")) {
+      setPasswordError("Password must not contain spaces");
+    } else {
+      setPasswordError("");
+    }
   };
 
   const handleAuthMethod = (method: string) => {
     setAuthMethod(method);
+    setEmail("");
+    setPassword("");
+    setEmailError("");
+    setPasswordError("");
   };
 
   const handleAuthSubmit = () => {
+    setEmail((prev) => prev.toLowerCase());
+
     if (authMethod === "login") {
       dispatch(loginUser({ email, password }));
     } else if (authMethod === "register") {
       dispatch(registerUser({ email, password }));
-      if (registered) setAuthMethod("login");
     }
   };
 
@@ -63,13 +93,18 @@ export const Auth: React.FC = () => {
           </div>
         </div>
         <form>
+          {!!emailError && <MessageError title={emailError} />}
           <h3>Email:</h3>
           <CustomInput
             type="email"
-            placeholder={`kirillcodes@${emailDomain ? emailDomain : "quiziverse.com"}`}
+            placeholder={`kirillcodes@${
+              teacherEmailDomain ? teacherEmailDomain : "quiziverse.com"
+            }`}
             value={email}
             handleInput={handleEmailInput}
           />
+
+          {!!passwordError && <MessageError title={passwordError} />}
           <h3>Password:</h3>
           <CustomInput
             type="password"
@@ -77,9 +112,11 @@ export const Auth: React.FC = () => {
             value={password}
             handleInput={handlePasswordInput}
           />
+
           <CustomButton
             title={authMethod === "login" ? "Sign-In" : "Sign-Up"}
             handleSubmit={handleAuthSubmit}
+            disabled={!!passwordError || !!emailError || !email || !password}
           />
         </form>
       </div>
