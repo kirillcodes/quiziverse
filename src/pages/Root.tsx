@@ -15,12 +15,14 @@ export const Root = () => {
     }
   }, [token, navigate]);
 
-  return token ? (
-    <main className={scss.main}>
-      <Navbar />
-      <Container>
-        <Outlet />
-      </Container>
-    </main>
-  ) : null;
+  return (
+    token && (
+      <main className={scss.main}>
+        <Navbar />
+        <Container>
+          <Outlet />
+        </Container>
+      </main>
+    )
+  );
 };

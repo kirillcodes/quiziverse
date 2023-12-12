@@ -13,3 +13,7 @@ export const login = (params: authRequest) => {
 export const register = (params: authRequest) => {
   return axiosInstance.post(Endpoints.AUTH.REGISTER, params);
 };
+
+export const logout = () => {
+  return axiosInstance.post(Endpoints.AUTH.LOGOUT);
+};

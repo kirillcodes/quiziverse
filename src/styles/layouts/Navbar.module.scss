@@ -114,5 +114,35 @@
         color: var(--light-color);
       }
     }
+
+    .dropdown {
+      z-index: 1;
+      position: absolute;
+      right: 10px;
+      top: 70px;
+      width: 130px;
+      padding: 8px;
+      display: flex;
+      flex-direction: column;
+      text-align: center;
+      background-color: var(--bg-color);
+      border-radius: 10px;
+      transition: all 0.1s ease-in-out;
+
+      > a {
+        width: 100%;
+        padding: 10px 0;
+        color: var(--gray-color);
+        border-radius: 10px;
+        text-decoration: none;
+        transition: all 0.1s ease-in-out;
+        user-select: none;
+
+        &:hover {
+          color: #eee;
+          background-color: var(--accent-color);
+        }
+      }
+    }
   }
 }

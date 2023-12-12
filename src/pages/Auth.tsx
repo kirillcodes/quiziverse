@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { CustomInput, MessageError } from "@components";
-import { CustomButton } from "@components/CustomButton";
+import { CustomInput, MessageError, CustomButton } from "@components";
 import { useAppDispatch } from "@hooks/useAppDispatch";
 import { loginUser, registerUser } from "@store/auth/actionCreators";
 import { useAppSelector } from "@hooks/useAppSelector";
+import { NavigateFunction, useNavigate } from "react-router-dom";
 import Logo from "@assets/images/logo-universe.png";
 import scss from "@styles/pages/Auth.module.scss";
 
 export const Auth: React.FC = () => {
   const dispatch = useAppDispatch();
-  const registered = useAppSelector((state) => state.auth.registerData.registered);
+  const registered: boolean = useAppSelector((state) => state.auth.registerData.registered);
+  const token: boolean = useAppSelector((state) => !!state.auth.loginData.accessToken);
+  const navigate: NavigateFunction = useNavigate();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -71,7 +73,8 @@ export const Auth: React.FC = () => {
 
   useEffect(() => {
     if (registered) setAuthMethod("login");
-  }, [registered]);
+    if (token) navigate("/");
+  }, [registered, token, navigate]);
 
   return (
     <div className={scss.auth}>

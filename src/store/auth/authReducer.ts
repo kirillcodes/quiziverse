@@ -109,7 +109,7 @@ const authReducer = createSlice({
         error: action.payload,
       },
     }),
-    logoutSuccess: (): AuthStateTypes => initialState,
+    logoutSuccess: (): AuthStateTypes => ({ ...initialState }),
   },
 });
 
