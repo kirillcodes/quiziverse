@@ -22,6 +22,13 @@ export const Auth: React.FC = () => {
   const studentEmailDomain: string = import.meta.env.VITE_STUDENT_EMAIL_DOMAIN;
   const teacherEmailDomain: string = import.meta.env.VITE_TEACHER_EMAIL_DOMAIN;
 
+  const clearInputs = () => {
+    setEmail("");
+    setPassword("");
+    setEmailError("");
+    setPasswordError("");
+  };
+
   const emailRegex = new RegExp(
     `^[^\\s@]+@(?:${studentEmailDomain.replace(".", "\\.")}|${teacherEmailDomain.replace(
       ".",
@@ -55,10 +62,7 @@ export const Auth: React.FC = () => {
 
   const handleAuthMethod = (method: string) => {
     setAuthMethod(method);
-    setEmail("");
-    setPassword("");
-    setEmailError("");
-    setPasswordError("");
+    clearInputs();
   };
 
   const handleAuthSubmit = () => {
@@ -72,7 +76,10 @@ export const Auth: React.FC = () => {
   };
 
   useEffect(() => {
-    if (registered) setAuthMethod("login");
+    if (registered) {
+      setAuthMethod("login");
+      clearInputs();
+    }
     if (token) navigate("/");
   }, [registered, token, navigate]);
 

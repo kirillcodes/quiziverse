@@ -7,12 +7,8 @@ type AuthStateTypes = {
     error: string | null;
   };
   loginData: {
+    id: number | null;
     accessToken: string | null;
-    isLoading: boolean;
-    error: string | null;
-  };
-  profileData: {
-    profile: string | null;
     isLoading: boolean;
     error: string | null;
   };
@@ -25,12 +21,8 @@ const initialState: AuthStateTypes = {
     error: null,
   },
   loginData: {
+    id: null,
     accessToken: null,
-    isLoading: false,
-    error: null,
-  },
-  profileData: {
-    profile: null,
     isLoading: false,
     error: null,
   },
@@ -70,10 +62,14 @@ const authReducer = createSlice({
         isLoading: true,
       },
     }),
-    loginSuccess: (state, action: PayloadAction<string>): AuthStateTypes => ({
+    loginSuccess: (
+      state,
+      action: PayloadAction<{ id: number; accessToken: string }>
+    ): AuthStateTypes => ({
       ...state,
       loginData: {
-        accessToken: action.payload,
+        id: action.payload.id,
+        accessToken: action.payload.accessToken,
         isLoading: false,
         error: null,
       },
@@ -82,29 +78,6 @@ const authReducer = createSlice({
       ...state,
       loginData: {
         ...state.loginData,
-        isLoading: false,
-        error: action.payload,
-      },
-    }),
-    loadProfileStart: (state): AuthStateTypes => ({
-      ...state,
-      profileData: {
-        ...state.profileData,
-        isLoading: true,
-      },
-    }),
-    loadProfileSuccess: (state, action: PayloadAction<string>): AuthStateTypes => ({
-      ...state,
-      profileData: {
-        ...state.profileData,
-        profile: action.payload,
-        isLoading: false,
-      },
-    }),
-    loadProfileFailure: (state, action: PayloadAction<string>): AuthStateTypes => ({
-      ...state,
-      profileData: {
-        ...state.profileData,
         isLoading: false,
         error: action.payload,
       },
@@ -120,9 +93,6 @@ export const {
   loginStart,
   loginSuccess,
   loginFailure,
-  loadProfileStart,
-  loadProfileSuccess,
-  loadProfileFailure,
   logoutSuccess,
 } = authReducer.actions;
 

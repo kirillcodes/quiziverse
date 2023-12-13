@@ -29,7 +29,7 @@ export const loginUser =
 
       const res = await api.auth.login(data);
 
-      dispatch(loginSuccess(res.data));
+      dispatch(loginSuccess({ id: res.data.userId, accessToken: res.data.token }));
     } catch (error) {
       if (error instanceof Error) {
         const message = (error as { response?: ApiResponse }).response?.data.message;
@@ -59,7 +59,6 @@ export const logoutUser =
   () =>
   async (dispatch: Dispatch): Promise<void> => {
     try {
-      // await api.auth.logout();
       dispatch(logoutSuccess());
     } catch (error) {
       if (error instanceof Error) {
