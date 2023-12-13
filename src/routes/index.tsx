@@ -1,5 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
-import { Auth, Root } from "@pages";
+import { Auth, NotFound, Root } from "@pages";
 import { Courses } from "@pages";
 
 export const router = createBrowserRouter([
@@ -12,6 +12,10 @@ export const router = createBrowserRouter([
         element: <Courses />,
       },
     ],
+  },
+  {
+    path: "*",
+    element: <NotFound />,
   },
   {
     path: "auth",
