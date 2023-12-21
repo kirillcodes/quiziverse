@@ -7,7 +7,7 @@ type AuthStateTypes = {
     error: string | null;
   };
   loginData: {
-    id: number | null;
+    email: string | null;
     accessToken: string | null;
     isLoading: boolean;
     error: string | null;
@@ -21,7 +21,7 @@ const initialState: AuthStateTypes = {
     error: null,
   },
   loginData: {
-    id: null,
+    email: null,
     accessToken: null,
     isLoading: false,
     error: null,
@@ -64,11 +64,11 @@ const authReducer = createSlice({
     }),
     loginSuccess: (
       state,
-      action: PayloadAction<{ id: number; accessToken: string }>
+      action: PayloadAction<{ email: string; accessToken: string }>
     ): AuthStateTypes => ({
       ...state,
       loginData: {
-        id: action.payload.id,
+        email: action.payload.email,
         accessToken: action.payload.accessToken,
         isLoading: false,
         error: null,

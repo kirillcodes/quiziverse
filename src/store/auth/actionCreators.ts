@@ -21,6 +21,43 @@ type ApiResponse = {
   };
 };
 
+type DataStorage = {
+  accessToken: string;
+  email: string;
+};
+
+export const getUserDataStorage = (): DataStorage | null => {
+  const email: string | null = localStorage.getItem("email");
+  const accessToken: string | null = localStorage.getItem("accessToken");
+
+  if (accessToken && email) {
+    return { accessToken, email };
+  } else {
+    return null;
+  }
+};
+
+export const setUserDataStorage = ({ email, accessToken }: DataStorage): void => {
+  localStorage.setItem("email", email);
+  localStorage.setItem("accessToken", accessToken);
+};
+
+export const removeUserDataStorage = (): void => {
+  localStorage.removeItem("email");
+  localStorage.removeItem("accessToken");
+};
+
+export const loginUserByStorage = () => (dispatch: Dispatch) => {
+  const storageData: DataStorage | null = getUserDataStorage();
+
+  if (storageData) {
+    dispatch(loginSuccess({ email: storageData.email, accessToken: storageData.accessToken }));
+    return true;
+  } else {
+    return false;
+  }
+};
+
 export const loginUser =
   (data: authRequest) =>
   async (dispatch: Dispatch): Promise<void> => {
@@ -29,7 +66,8 @@ export const loginUser =
 
       const res = await api.auth.login(data);
 
-      dispatch(loginSuccess({ id: res.data.userId, accessToken: res.data.token }));
+      dispatch(loginSuccess({ email: res.data.email, accessToken: res.data.token }));
+      setUserDataStorage({ email: res.data.email, accessToken: res.data.token });
     } catch (error) {
       if (error instanceof Error) {
         const message = (error as { response?: ApiResponse }).response?.data.message;
@@ -60,6 +98,7 @@ export const logoutUser =
   async (dispatch: Dispatch): Promise<void> => {
     try {
       dispatch(logoutSuccess());
+      removeUserDataStorage();
     } catch (error) {
       if (error instanceof Error) {
         console.log(error);
