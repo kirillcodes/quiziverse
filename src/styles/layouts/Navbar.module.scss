@@ -3,6 +3,11 @@
   height: 40px;
 }
 
+%icon {
+  font-size: 1.5rem;
+  color: var(--light-color);
+}
+
 .navbar {
   position: relative;
   display: flex;
@@ -13,6 +18,19 @@
   margin-bottom: 20px;
   height: 60px;
   background-color: var(--bg-color);
+
+  // * modal
+  h2 {
+    font-size: 1.2rem;
+    font-weight: 500;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  label {
+    color: var(--gray-color);
+  }
+  //modal *
 
   @media (max-width: 425px) {
     padding: 0 10px;
@@ -67,7 +85,7 @@
       background-color: var(--accent-color);
       border: 1px solid transparent;
       border-radius: 50px;
-      padding: 0 20px 0 50px;
+      padding: 0 45px 0 45px;
       color: #eee;
       outline: none;
 
@@ -78,9 +96,27 @@
 
     .searchIcon {
       position: absolute;
-      left: 20px;
-      font-size: 1.4rem;
-      color: var(--light-color);
+      @extend %icon;
+      left: 15px;
+    }
+
+    > abbr {
+      position: absolute;
+      right: 11px;
+      padding: 4px;
+      cursor: pointer;
+      
+      .createCourse {
+        margin-top: 4px;
+        @extend %icon;
+        transition: all 0.1s ease-in-out;
+      }
+
+      &:hover {
+        .createCourse {
+          color: var(--gray-color);
+        }
+      }
     }
   }
 
