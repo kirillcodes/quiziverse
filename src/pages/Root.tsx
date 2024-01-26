@@ -1,25 +1,22 @@
-import { NavigateFunction, Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import { Navbar } from "@layouts";
 import scss from "@styles/pages/Root.module.scss";
 import { Container } from "@components";
 import { useEffect } from "react";
-import { loginUserByStorage } from "@store/auth/actionCreators";
-import { useAppDispatch } from "@hooks/useAppDispatch";
 
 export const Root = () => {
-  const navigate: NavigateFunction = useNavigate();
-  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
-  const isUserDataAccess = dispatch(loginUserByStorage());
+  const token = localStorage.getItem('token');
 
   useEffect(() => {
-    if (!isUserDataAccess) {
+    if (!token) {
       navigate("/auth");
     }
-  }, [navigate, isUserDataAccess]);
+  }, [navigate, token]);
 
   return (
-    isUserDataAccess && (
+    token && (
       <main className={scss.main}>
         <Navbar />
         <Container>

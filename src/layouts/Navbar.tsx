@@ -2,10 +2,15 @@ import scss from "@styles/layouts/Navbar.module.scss";
 import { MdOutlinePersonOutline, MdOutlineSearch, MdAdd } from "react-icons/md";
 import { Link } from "react-router-dom";
 import Logo from "@assets/images/logo-universe.png";
-import { useState } from "react";
-import { logoutUser } from "@store/auth/actionCreators";
-import { useAppDispatch } from "@hooks/useAppDispatch";
+import { useEffect, useState } from "react";
 import { CustomButton, CustomInput, Modal } from "@components";
+import { useCreateCourseMutation, useGetAllCoursesQuery } from '@store/api/coursesApi';
+
+type Course = {
+  id: number;
+  title: string;
+  username: string;
+};
 
 const dropdownMenu = [
   {
@@ -22,19 +27,39 @@ const dropdownMenu = [
   },
 ];
 
+const filterCourses = (searchText: string, listOfCourses: Course[]): Course[] => {
+  if (!searchText) {
+    return listOfCourses;
+  }
+
+  const lowerSearchText = searchText.toLowerCase();
+
+  return listOfCourses.filter(
+    ({ title, id }) =>
+      title.toLowerCase().includes(lowerSearchText) || id.toString().includes(lowerSearchText)
+  );
+};
+
 export const Navbar = () => {
-  const dispatch = useAppDispatch();
+  const [createCourseMutation] = useCreateCourseMutation();
+  const {data: allCourses = []} = useGetAllCoursesQuery({});
+
   const [isOpenDropdown, setIsOpenDropdown] = useState(false);
   const [isOpenModal, setIsOpenModal] = useState(false);
-  const [courseTitle, setCousreTitle] = useState("");
+
+  const [courseTitle, setCourseTitle] = useState("");
   const [courseDescription, setCourseDescription] = useState("");
+
+  const [inputSearch, setInputSearch] = useState("");
+  const [courses, setCourses] = useState<Course[]>([]);
+
 
   const toggleOpenDropdown = () => {
     setIsOpenDropdown((prev) => !prev);
   };
 
   const handleLogout = () => {
-    dispatch(logoutUser());
+    localStorage.removeItem('token');
     setIsOpenDropdown(false);
   };
 
@@ -43,16 +68,32 @@ export const Navbar = () => {
   };
 
   const changeCourseTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setCousreTitle(e.target.value);
+    setCourseTitle(e.target.value);
   };
 
   const changeCourseDescription = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCourseDescription(e.target.value);
   };
 
-  const handleCreateCourse = () => {
-    return null;
+  const handleCreateCourse = async (): Promise<void> => {
+    if (courseTitle.trim() && courseDescription.trim()) {
+      const [title, description] = [courseTitle, courseDescription];
+      await createCourseMutation({ title, description });
+    }
   };
+
+  const handleInputSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputSearch(e.target.value);
+  };
+
+  useEffect(() => {
+    const Debounce = setTimeout(() => {
+      const filteredCourses: Course[] = filterCourses(inputSearch, allCourses);
+      inputSearch.trim().length ? setCourses(filteredCourses) : setCourses([]);
+    }, 300);
+
+    return () => clearTimeout(Debounce);
+  }, [inputSearch, allCourses]);
 
   return (
     <nav className={scss.navbar}>
@@ -85,12 +126,32 @@ export const Navbar = () => {
         <h1>Quiziverse</h1>
       </Link>
       <div className={scss.search}>
-        <input type="text" placeholder="Search course" />
+        <input
+          type="text"
+          placeholder="Search course"
+          value={inputSearch}
+          onChange={(e) => handleInputSearch(e)}
+        />
         <MdOutlineSearch className={scss.searchIcon} />
         <abbr title="Create course" onClick={toggleOpenModal}>
           <MdAdd className={scss.createCourse} />
         </abbr>
       </div>
+      {inputSearch.trim() && courses.length && (
+        <div className={scss.dropdownCoursesList}>
+          <ul>
+            {courses.map(({ id, title, username }) => (
+              <li key={id}>
+                <div className={scss.courseInfo}>
+                  <h4>{title}</h4>
+                  <p>{username}</p>
+                </div>
+                <span>ID: {id}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
       <div className={scss.personal}>
         {/* <button>EN</button> */}
         <div className={scss.profile} onClick={toggleOpenDropdown}>

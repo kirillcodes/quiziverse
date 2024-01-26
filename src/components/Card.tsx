@@ -6,9 +6,10 @@ type CardProps = {
   imgURL: string;
   title: string;
   author: string;
+  id: number;
 };
 
-export const Card = ({ count, imgURL, title, author }: CardProps) => {
+export const Card = ({ count, imgURL, title, author, id }: CardProps) => {
   return (
     <div className={scss.card}>
       <button>
@@ -19,7 +20,10 @@ export const Card = ({ count, imgURL, title, author }: CardProps) => {
         <h3>
           <span>{count}.</span> {title}
         </h3>
-        <p>{author}</p>
+        <div>
+          <p>{author}</p>
+          <span>ID: {id}</span>
+        </div>
       </div>
     </div>
   );

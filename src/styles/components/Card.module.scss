@@ -76,9 +76,21 @@
       }
     }
 
-    > p {
-      font-size: 0.9rem;
-      color: var(--gray-color);
+    > div {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      
+      > p {
+        font-size: 0.9rem;
+        color: var(--gray-color);
+      }
+
+      > span {
+        font-size: 0.8rem;
+        font-weight: 400;
+        color: #ffffff45;
+      }
     }
   }
 }

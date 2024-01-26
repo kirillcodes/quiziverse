@@ -1,32 +1,32 @@
 import React, { useEffect, useState } from "react";
 import { CustomInput, MessageError, CustomButton } from "@components";
-import { useAppDispatch } from "@hooks/useAppDispatch";
-import { loginUser, registerUser } from "@store/auth/actionCreators";
-import { useAppSelector } from "@hooks/useAppSelector";
 import { NavigateFunction, useNavigate } from "react-router-dom";
 import Logo from "@assets/images/logo-universe.png";
 import scss from "@styles/pages/Auth.module.scss";
+import { useLoginMutation, useRegistrationMutation } from "@store/api/authApi";
+import { useGetSignedCoursesQuery } from "@store/api/coursesApi";
 
 export const Auth: React.FC = () => {
-  const dispatch = useAppDispatch();
-  const registered: boolean = useAppSelector((state) => state.auth.registerData.registered);
-  const token: boolean = useAppSelector((state) => !!state.auth.loginData.accessToken);
   const navigate: NavigateFunction = useNavigate();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [emailError, setEmailError] = useState("");
-  const [passwordError, setPasswordError] = useState("");
+  const [incorrectEmail, setIncorrectEmail] = useState("");
+  const [incorrectPassword, setIncorrestPassword] = useState("");
   const [authMethod, setAuthMethod] = useState("login");
 
   const studentEmailDomain: string = import.meta.env.VITE_STUDENT_EMAIL_DOMAIN;
   const teacherEmailDomain: string = import.meta.env.VITE_TEACHER_EMAIL_DOMAIN;
 
+  const [loginMutation, { data: loginData, isSuccess: isLoggedIn }] = useLoginMutation();
+  const [registrationMutation, { isSuccess: isRegistered }] = useRegistrationMutation();
+  const { refetch: refetchSignedCourses } = useGetSignedCoursesQuery({});
+
   const clearInputs = () => {
     setEmail("");
     setPassword("");
-    setEmailError("");
-    setPasswordError("");
+    setIncorrectEmail("");
+    setIncorrestPassword("");
   };
 
   const emailRegex = new RegExp(
@@ -40,11 +40,11 @@ export const Auth: React.FC = () => {
     setEmail(e.target.value);
 
     if (e.target.value.length === 0) {
-      setEmailError("Email address cannot be empty");
+      setIncorrectEmail("Email address cannot be empty");
     } else if (!emailRegex.test(e.target.value)) {
-      setEmailError("Incorrect email address");
+      setIncorrectEmail("Incorrect email address");
     } else {
-      setEmailError("");
+      setIncorrectEmail("");
     }
   };
 
@@ -52,11 +52,11 @@ export const Auth: React.FC = () => {
     setPassword(e.target.value);
 
     if (e.target.value.length <= 5) {
-      setPasswordError("Password must be at least 6 characters");
+      setIncorrestPassword("Password must be at least 6 characters");
     } else if (e.target.value.includes(" ")) {
-      setPasswordError("Password must not contain spaces");
+      setIncorrestPassword("Password must not contain spaces");
     } else {
-      setPasswordError("");
+      setIncorrestPassword("");
     }
   };
 
@@ -65,23 +65,30 @@ export const Auth: React.FC = () => {
     clearInputs();
   };
 
-  const handleAuthSubmit = () => {
+  const handleAuthSubmit = async () => {
     setEmail((prev) => prev.toLowerCase());
 
-    if (authMethod === "login") {
-      dispatch(loginUser({ email, password }));
-    } else if (authMethod === "register") {
-      dispatch(registerUser({ email, password }));
+    try {
+      if (authMethod === "login") {
+        await loginMutation({ email, password }).unwrap();
+      } else if (authMethod === "registration") {
+        await registrationMutation({ email, password }).unwrap();
+      }
+    } catch (error) {
+      console.error("Error during authentication:", error);
     }
   };
 
   useEffect(() => {
-    if (registered) {
-      setAuthMethod("login");
-      clearInputs();
+    if (isRegistered) {
+      handleAuthMethod("login");
     }
-    if (token) navigate("/");
-  }, [registered, token, navigate]);
+    if (isLoggedIn) {
+      localStorage.setItem("token", loginData.token);
+      navigate("/");
+      refetchSignedCourses();
+    }
+  }, [isLoggedIn, isRegistered, navigate, loginData]);
 
   return (
     <div className={scss.auth}>
@@ -96,14 +103,14 @@ export const Auth: React.FC = () => {
             Login
           </div>
           <div
-            onClick={() => handleAuthMethod("register")}
-            style={authMethod === "register" ? { backgroundColor: "var(--light-color)" } : {}}
+            onClick={() => handleAuthMethod("registration")}
+            style={authMethod === "registration" ? { backgroundColor: "var(--light-color)" } : {}}
           >
             Registration
           </div>
         </div>
         <form>
-          {!!emailError && <MessageError title={emailError} />}
+          {!!incorrectEmail && <MessageError title={incorrectEmail} />}
           <h3>Email:</h3>
           <CustomInput
             type="email"
@@ -114,7 +121,7 @@ export const Auth: React.FC = () => {
             handleInput={handleEmailInput}
           />
 
-          {!!passwordError && <MessageError title={passwordError} />}
+          {!!incorrectPassword && <MessageError title={incorrectPassword} />}
           <h3>Password:</h3>
           <CustomInput
             type="password"
@@ -124,9 +131,9 @@ export const Auth: React.FC = () => {
           />
 
           <CustomButton
-            title={authMethod === "login" ? "Sign-In" : "Sign-Up"}
+            title={authMethod === "login" ? "Login" : "Registration"}
             handleSubmit={handleAuthSubmit}
-            disabled={!!passwordError || !!emailError || !email || !password}
+            disabled={!!incorrectPassword || !!incorrectEmail || !email || !password}
           />
         </form>
       </div>
