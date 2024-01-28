@@ -1,0 +1,46 @@
+.coursePage {
+  .info {
+    display: flex;
+    align-items: start;
+    justify-content: space-between;
+
+    .title {
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: var(--light-color);
+
+      @media (min-width: 425px){
+        font-size: 1.8rem;
+      }
+    }
+
+    .id {
+      width: 100%;
+      max-width: 100px;
+      margin-top: 4px;
+      text-align: end;
+      font-weight: 400;
+      color: #ffffff45;
+    }
+  }
+
+  .description {
+    margin: 10px 0;
+    color: var(--gray-color);
+  }
+
+  > h3 {
+    font-weight: 500;
+    font-size: 1.1rem;
+    margin-top: 30px;
+    color: var(--gray-color);
+
+    @media (min-width: 425px) {
+      font-size: 1.3rem;
+    }
+  }
+
+  .testList {
+    margin-top: 15px;
+  }
+}

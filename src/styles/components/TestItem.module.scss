@@ -1,0 +1,47 @@
+%flex-center-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.testItem {
+  overflow-y: hidden;
+  flex-direction: column;
+  height: 60px;
+  margin-bottom: 10px;
+  padding: 20px 15px;
+  border-radius: 10px;
+  background-color: var(--accent-color);
+  transition: all 0.1s ease-in-out;
+  cursor: pointer;
+
+  &:hover {
+    background-color: var(--bg-color);
+  }
+
+  .wrapper {
+    @extend %flex-center-between;
+
+    > h3 {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+
+  .allInfo {
+    @extend %flex-center-between;
+    margin-top: 25px;
+
+    > p {
+      color: var(--gray-color);
+      > span {
+        color: lightblue;
+      }
+    }
+
+    > button {
+      width: 120px;
+    }
+  }
+}

@@ -1,10 +1,10 @@
 import scss from "@styles/layouts/Navbar.module.scss";
 import { MdOutlinePersonOutline, MdOutlineSearch, MdAdd } from "react-icons/md";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Logo from "@assets/images/logo-universe.png";
 import { useEffect, useState } from "react";
 import { CustomButton, CustomInput, Modal } from "@components";
-import { useCreateCourseMutation, useGetAllCoursesQuery } from '@store/api/coursesApi';
+import { useCreateCourseMutation, useGetAllCoursesQuery } from "@store/api/coursesApi";
 
 type Course = {
   id: number;
@@ -41,8 +41,10 @@ const filterCourses = (searchText: string, listOfCourses: Course[]): Course[] =>
 };
 
 export const Navbar = () => {
+  const navigate = useNavigate();
+
   const [createCourseMutation] = useCreateCourseMutation();
-  const {data: allCourses = []} = useGetAllCoursesQuery({});
+  const { data: allCourses = [] } = useGetAllCoursesQuery({});
 
   const [isOpenDropdown, setIsOpenDropdown] = useState(false);
   const [isOpenModal, setIsOpenModal] = useState(false);
@@ -53,13 +55,12 @@ export const Navbar = () => {
   const [inputSearch, setInputSearch] = useState("");
   const [courses, setCourses] = useState<Course[]>([]);
 
-
   const toggleOpenDropdown = () => {
     setIsOpenDropdown((prev) => !prev);
   };
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
+    localStorage.removeItem("token");
     setIsOpenDropdown(false);
   };
 
@@ -84,6 +85,11 @@ export const Navbar = () => {
 
   const handleInputSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputSearch(e.target.value);
+  };
+
+  const handleCourse = (id: number) => {
+    navigate(`/course/${id}`);
+    setInputSearch("");
   };
 
   useEffect(() => {
@@ -141,7 +147,7 @@ export const Navbar = () => {
         <div className={scss.dropdownCoursesList}>
           <ul>
             {courses.map(({ id, title, username }) => (
-              <li key={id}>
+              <li key={id} onClick={() => handleCourse(id)}>
                 <div className={scss.courseInfo}>
                   <h4>{title}</h4>
                   <p>{username}</p>

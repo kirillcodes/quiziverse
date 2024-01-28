@@ -120,7 +120,7 @@
   }
 
   .dropdownCoursesList {
-    overflow: auto;
+    overflow-y: auto;
     z-index: 3;
     position: absolute;
     left: 50%;
@@ -172,6 +172,20 @@
         }
 
         .courseInfo {
+          > h4 {
+            max-width: 210px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+
+            @media (min-width: 425px) {
+              max-width: 300px;
+            }
+
+            @media (min-width: 768px) {
+              max-width: 480px;
+            }
+          }
 
           > p {
             margin-top: 3px;

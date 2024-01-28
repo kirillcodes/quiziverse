@@ -11,6 +11,9 @@ export const coursesApi = createApi({
   tagTypes: ["SignedCourses", "AllCourses"],
   baseQuery: interceptorQuery,
   endpoints: (builder) => ({
+    getCourseById: builder.query({
+      query: (id: string) => `courses/${id}`,
+    }),
     getSignedCourses: builder.query({
       query: () => "courses/signed",
       providesTags: (result) =>
@@ -45,6 +48,7 @@ export const coursesApi = createApi({
 });
 
 export const {
+  useGetCourseByIdQuery,
   useGetSignedCoursesQuery,
   useGetAllCoursesQuery,
   useCreateCourseMutation,

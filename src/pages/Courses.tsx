@@ -8,13 +8,13 @@ type signedCourseType = {
   id: number;
 }
 
-export const Courses = () => {
+export const Courses: React.FC = () => {
   const {data: signedCourses} = useGetSignedCoursesQuery({});
 
   return (
     <section className={scss.courses}>
       <div className={scss.title}>
-        <h2>Courses</h2>
+        <h2 >Courses</h2>
         <div></div>
       </div>
       <div className={scss.cardList}>
@@ -22,10 +22,10 @@ export const Courses = () => {
           <Card
             key={id}
             count={++index}
-            imgURL="https://animesher.com/orig/1/125/1253/12539/animesher.com_nature-rain-1253935.gif"
+            id={id}
             title={title}
             author={username}
-            id={id}
+            imgURL="https://animesher.com/orig/1/125/1253/12539/animesher.com_nature-rain-1253935.gif"
           />
         ))}
       </div>

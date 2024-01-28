@@ -1,5 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
-import { Auth, NotFound, Root } from "@pages";
+import { Auth, CoursePage, NotFound, Root } from "@pages";
 import { Courses } from "@pages";
 
 export const router = createBrowserRouter([
@@ -10,6 +10,10 @@ export const router = createBrowserRouter([
       {
         index: true,
         element: <Courses />,
+      },
+      {
+        path: 'course/:id',
+        element: <CoursePage />
       },
     ],
   },
