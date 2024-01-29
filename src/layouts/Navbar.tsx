@@ -9,7 +9,7 @@ import { useCreateCourseMutation, useGetAllCoursesQuery } from "@store/api/cours
 type Course = {
   id: number;
   title: string;
-  username: string;
+  author: string;
 };
 
 const dropdownMenu = [
@@ -146,11 +146,11 @@ export const Navbar = () => {
       {inputSearch.trim() && courses.length && (
         <div className={scss.dropdownCoursesList}>
           <ul>
-            {courses.map(({ id, title, username }) => (
+            {courses.map(({ id, title, author }) => (
               <li key={id} onClick={() => handleCourse(id)}>
                 <div className={scss.courseInfo}>
                   <h4>{title}</h4>
-                  <p>{username}</p>
+                  <p>{author}</p>
                 </div>
                 <span>ID: {id}</span>
               </li>

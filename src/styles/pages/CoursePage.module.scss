@@ -1,8 +1,12 @@
+%flex-center-between {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+}
+
 .coursePage {
   .info {
-    display: flex;
-    align-items: start;
-    justify-content: space-between;
+    @extend %flex-center-between;
 
     .title {
       font-size: 1.3rem;
@@ -29,6 +33,36 @@
     color: var(--gray-color);
   }
 
+  .toolsBlock {
+    @extend %flex-center-between;
+
+    @media (max-width: 425px) {
+      display: block;
+    }
+
+    .author {
+      padding-top: 8px;
+    }
+
+    .tools {
+      @extend %flex-center-between;
+
+      @media (max-width: 425px) {
+        margin-top: 15px;
+      }
+
+      > button {
+        width: 100px;
+
+        @media (min-width: 425px) {        
+          &:last-child {
+            margin-left: 10px;
+          }
+        }
+      }
+    }
+  }
+
   > h3 {
     font-weight: 500;
     font-size: 1.1rem;
@@ -39,6 +73,7 @@
       font-size: 1.3rem;
     }
   }
+
 
   .testList {
     margin-top: 15px;

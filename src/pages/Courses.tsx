@@ -3,7 +3,7 @@ import { useGetSignedCoursesQuery } from '@store/api/coursesApi';
 import scss from "@styles/pages/Courses.module.scss";
 
 type signedCourseType = {
-  username: string;
+  author: string;
   title: string;
   id: number;
 }
@@ -18,13 +18,13 @@ export const Courses: React.FC = () => {
         <div></div>
       </div>
       <div className={scss.cardList}>
-        {signedCourses && signedCourses.map(({ username, title, id }: signedCourseType, index: number) => (
+        {signedCourses && signedCourses.map(({ author, title, id }: signedCourseType, index: number) => (
           <Card
             key={id}
             count={++index}
             id={id}
             title={title}
-            author={username}
+            author={author}
             imgURL="https://animesher.com/orig/1/125/1253/12539/animesher.com_nature-rain-1253935.gif"
           />
         ))}
