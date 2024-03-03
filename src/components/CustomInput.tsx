@@ -4,7 +4,8 @@ import scss from "@styles/components/CustomInput.module.scss";
 type CustomInputProps = {
   type: "text" | "password" | "number" | "email";
   placeholder?: string;
-  value: string;
+  name?: string;
+  value: string | number;
   style?: CSSProperties;
   handleInput: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
@@ -12,6 +13,7 @@ type CustomInputProps = {
 export const CustomInput: React.FC<CustomInputProps> = ({
   type,
   placeholder,
+  name,
   value,
   handleInput,
   style,
@@ -20,6 +22,7 @@ export const CustomInput: React.FC<CustomInputProps> = ({
     <>
       <input
         type={type}
+        name={name}
         placeholder={placeholder}
         className={scss.input}
         value={value}
