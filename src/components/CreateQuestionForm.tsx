@@ -2,6 +2,7 @@ import { QuestionDto } from '@dto/create-test.dto';
 import React, { useState } from 'react';
 import { CustomInput } from './CustomInput';
 import { CustomButton } from './CustomButton';
+import scss from "@styles/components/CreateQuestionForm.module.scss";
 
 interface CreateQuestionFormProps {
   addQuestion: (question: QuestionDto) => void;
@@ -18,10 +19,10 @@ export const CreateQuestionForm: React.FC<CreateQuestionFormProps> = ({ addQuest
   };
 
   return (
-    <form>
+    <form className={scss.questionForm}>
       <label>
         Question:
-        <CustomInput type="text" value={questionText} handleInput={e => setQuestionText(e.target.value)} />
+        <CustomInput type="text" placeholder='Enter question' value={questionText} handleInput={e => setQuestionText(e.target.value)} />
       </label>
       <CustomButton title='Add question' handleSubmit={handleSubmit}/>
     </form>

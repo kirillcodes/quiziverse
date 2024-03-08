@@ -1,0 +1,50 @@
+.questionForm {
+  > input {
+    margin-top: 10px;
+  }
+
+  .titleBlock {
+    > input {
+      margin: 5px 0 10px 0;
+    }
+  }
+
+  .timeLimitBlock {
+    > input {
+      margin: 5px 0;
+    }
+  }
+
+  .questionList {
+    max-height: 400px;
+    overflow-y: auto;
+    margin: 5px 0;
+    padding: 10px;
+    background-color: #1e2226;
+    border-radius: 8px;
+
+    .questionBlock {
+      border: 2px solid var(--accent-color);
+      padding: 10px;
+      border-radius: 8px;
+      margin-top: 10px;
+
+      &:first-child {
+        margin-top: 0;
+      }
+
+      > ul {
+        margin: 5px 0;
+
+        > li {
+          margin: 5px 0;
+          
+          > input {
+            margin-left: 0;
+            width: 25px;
+          }
+        }
+      }
+    }
+  }
+}

@@ -5,6 +5,7 @@ import { CreateTestDto, QuestionDto, AnswerDto } from "@dto/create-test.dto";
 import { useCreateTestMutation } from "@store/api/testsApi";
 import { CustomInput } from "./CustomInput";
 import { CustomButton } from "./CustomButton";
+import scss from "@styles/components/CreateTestForm.module.scss";
 
 type Props = {
   courseId: string;
@@ -72,44 +73,60 @@ export const CreateTestForm: React.FC<Props> = ({ courseId }) => {
   };
 
   return (
-    <div>
-      <label>
+    <div className={scss.questionForm}>
+      <label className={scss.titleBlock}>
         Title:
-        <CustomInput type="text" name="title" value={formData.title} handleInput={handleChange} />
+        <CustomInput
+          type="text"
+          name="title"
+          placeholder="Enter title"
+          value={formData.title}
+          handleInput={handleChange}
+        />
       </label>
-      <label>
+      <label className={scss.timeLimitBlock}>
         Time Limit (minutes):
         <CustomInput
           type="number"
           name="timeLimit"
+          placeholder="0"
           value={formData.timeLimit}
           handleInput={handleChange}
         />
       </label>
-      {formData.questions.map((question, questionIndex) => (
-        <div key={questionIndex} style={{ backgroundColor: "#555", padding: "10px", margin: "10px 0" }}>
-          <p>
-            Question {questionIndex + 1}: {question.text}
-          </p>
-          <ul>
-            {question.answers.map((answer, answerIndex) => (
-              <li key={answerIndex}>
-                <input
-                  type="radio"
-                  name={`rightAnswer_${questionIndex}`}
-                  value={answerIndex}
-                  checked={question.rightAnswer === answerIndex}
-                  onChange={() => handleRightAnswerChange(questionIndex, answerIndex)}
-                />
-                {answer.text}
-              </li>
-            ))}
-          </ul>
-          <CreateAnswerForm questionIndex={questionIndex} addAnswer={addAnswer} />
+      {formData.questions.length ? (
+        <div className={scss.questionList}>
+          {formData.questions.map((question, questionIndex) => (
+            <div key={questionIndex} className={scss.questionBlock}>
+              <p>
+                {questionIndex + 1}: {question.text}
+              </p>
+              <ul>
+                {question.answers.map((answer, answerIndex) => (
+                  <li key={answerIndex}>
+                    <input
+                      type="radio"
+                      name={`rightAnswer_${questionIndex}`}
+                      value={answerIndex}
+                      checked={question.rightAnswer === answerIndex}
+                      onChange={() => handleRightAnswerChange(questionIndex, answerIndex)}
+                    />
+                    {answer.text}
+                  </li>
+                ))}
+              </ul>
+              <CreateAnswerForm questionIndex={questionIndex} addAnswer={addAnswer} />
+            </div>
+          ))}
         </div>
-      ))}
+      ) : null}
       <CreateQuestionForm addQuestion={addQuestion} />
-      <CustomButton title="Create test" handleSubmit={handleSubmit} />
+      <CustomButton
+        title="Create test"
+        handleSubmit={handleSubmit}
+        disabled={formData.questions.length && formData.title && formData.timeLimit ? false : true}
+        style={{ marginTop: "10px" }}
+      />
     </div>
   );
 };
