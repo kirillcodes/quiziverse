@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { AnswerDto } from "@dto/create-test.dto";
 import { CustomInput } from "./CustomInput";
 import { CustomButton } from "./CustomButton";
+import scss from "@styles/components/CreateAnswerForm.module.scss";
 
 type Props = {
   addAnswer: (answer: AnswerDto, questionIndex: number) => void;
@@ -24,7 +25,7 @@ export const CreateAnswerForm: React.FC<Props> = ({ addAnswer, questionIndex }) 
   };
 
   return (
-    <div>
+    <div className={scss.answerForm}>
       <CustomInput
         type="text"
         placeholder="Enter answer"
