@@ -5,7 +5,9 @@ import { CreateTestDto, QuestionDto, AnswerDto } from "@dto/create-test.dto";
 import { useCreateTestMutation } from "@store/api/testsApi";
 import { CustomInput } from "./CustomInput";
 import { CustomButton } from "./CustomButton";
+import DatePicker from "react-datepicker";
 import scss from "@styles/components/CreateTestForm.module.scss";
+import "react-datepicker/dist/react-datepicker.css";
 
 type Props = {
   courseId: string;
@@ -26,6 +28,15 @@ export const CreateTestForm: React.FC<Props> = ({ courseId }) => {
       [e.target.name]: e.target.value,
     }));
   };
+
+  const handleDateChange = (date: Date | null) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      startDate: date || new Date(),
+    }));
+  };
+
+  
 
   const addQuestion = (question: QuestionDto) => {
     setFormData((prevData) => ({
@@ -92,6 +103,27 @@ export const CreateTestForm: React.FC<Props> = ({ courseId }) => {
           placeholder="0"
           value={formData.timeLimit}
           handleInput={handleChange}
+        />
+      </label>
+      <label className={scss.startDateBlock}>
+        Start Date:
+        <DatePicker
+          showIcon
+          closeOnScroll
+          customInput={<CustomInput
+            type="text"
+            name="startDate"
+            placeholder="Select start date"
+            value={formData.startDate.toString()}
+            handleInput={() => {}}
+          />}
+          selected={formData.startDate}
+          onChange={handleDateChange}
+          showTimeSelect
+          timeIntervals={15}
+          timeCaption="Time"
+          dateFormat="dd/MM/yyyy h:mm aa"
+          minDate={new Date()}
         />
       </label>
       {formData.questions.length ? (
