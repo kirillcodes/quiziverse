@@ -14,5 +14,4 @@ export interface QuestionDto {
 
 export interface AnswerDto {
   text: string;
-  isCorrect: boolean;
 }
