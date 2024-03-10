@@ -1,4 +1,9 @@
 .questionForm {
+  > h2 {
+    font-size: 1.5rem;
+    text-align: center;
+  }
+
   > input {
     margin-top: 10px;
   }
@@ -16,7 +21,7 @@
   }
 
   .questionList {
-    max-height: 400px;
+    max-height: 300px;
     overflow-y: auto;
     margin: 5px 0;
     padding: 10px;
@@ -48,7 +53,28 @@
     }
   }
 
-  .datePicker {
-    margin-left: 10px;
+  .additionalSettings {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .totalScore {
+      > span {
+        color: var(--gray-color);
+      }
+    }
+
+    .datePicker {
+      display: flex;
+      align-items: center;
+      
+      .startDate {
+        margin-right: 5px;
+
+        @media (max-width: 400px) {
+          display: none;
+        }
+      }
+    }
   }
 }

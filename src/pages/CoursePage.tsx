@@ -40,7 +40,7 @@ export const CoursePage: React.FC = () => {
   return (
     <>
       {isOpenModal && (
-        <Modal handleModal={handleModal}>
+        <Modal handleModal={handleModal} style={{width: 800, padding: 10}}>
           <CreateTestForm courseId={courseId} />
         </Modal>
       )}

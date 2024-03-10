@@ -21,7 +21,6 @@ export const CreateQuestionForm: React.FC<CreateQuestionFormProps> = ({ addQuest
   return (
     <form className={scss.questionForm}>
       <label>
-        Question:
         <CustomInput type="text" placeholder='Enter question' value={questionText} handleInput={e => setQuestionText(e.target.value)} />
       </label>
       <CustomButton title='Add question' handleSubmit={handleSubmit}/>
