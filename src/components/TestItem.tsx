@@ -4,11 +4,11 @@ import { CustomButton } from "./CustomButton";
 
 type TestItemProps = {
   title: string;
-  createdAt: string;
+  startDate: string;
   timeLimit: number;
 };
 
-export const TestItem: React.FC<TestItemProps> = ({ title, createdAt, timeLimit }) => {
+export const TestItem: React.FC<TestItemProps> = ({ title, startDate, timeLimit }) => {
   const [isOpened, setIsOpened] = useState(false);
 
   const toggleIsOpened = () => {
@@ -21,7 +21,7 @@ export const TestItem: React.FC<TestItemProps> = ({ title, createdAt, timeLimit 
     <div className={scss.testItem} onClick={toggleIsOpened} style={isOpened ? { height: 110 } : {}}>
       <div className={scss.wrapper}>
         <h3>{title}</h3>
-        <div>{createdAt}</div>
+        <div>{startDate}</div>
       </div>
       <div className={scss.allInfo}>
         <p>

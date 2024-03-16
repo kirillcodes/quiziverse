@@ -9,9 +9,16 @@ import { useGetTestsQuery } from "@store/api/testsApi";
 
 type Test = {
   id: number;
-  createdAt: string;
+  startDate: string;
   timeLimit: number;
   title: string;
+};
+
+/* ISO -> dd/mm/yyyy hh:mm */
+const convertDate = (iso: string) => {
+  const date = iso.slice(0, 10);
+  const time = iso.slice(11, 16);
+  return date + " " + time;
 };
 
 export const CoursePage: React.FC = () => {
@@ -33,7 +40,6 @@ export const CoursePage: React.FC = () => {
   }, [navigate, isError]);
 
   const { data: tests, isLoading: testsIsLoading } = useGetTestsQuery(id || "");
-  console.log(tests);
 
   // const toggleSubscribeCourse = () => {};
 
@@ -73,8 +79,13 @@ export const CoursePage: React.FC = () => {
         <h3>List of tests:</h3>
         <div className={scss.testList}>
           {tests.length &&
-            tests.map(({ id, title, timeLimit, createdAt }: Test) => (
-              <TestItem key={id} title={title} createdAt={createdAt} timeLimit={timeLimit} />
+            tests.map(({ id, title, timeLimit, startDate }: Test) => (
+              <TestItem
+                key={id}
+                title={title}
+                startDate={convertDate(startDate)}
+                timeLimit={timeLimit}
+              />
             ))}
         </div>
       </div>
