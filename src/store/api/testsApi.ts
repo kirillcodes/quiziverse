@@ -13,7 +13,10 @@ export const testsApi = createApi({
         body,
       }),
     }),
+    getTests: builder.query({
+      query: (courseId: string) => `courses/${courseId}/tests`,
+    }),
   }),
 });
 
-export const { useCreateTestMutation } = testsApi;
+export const { useCreateTestMutation, useGetTestsQuery } = testsApi;

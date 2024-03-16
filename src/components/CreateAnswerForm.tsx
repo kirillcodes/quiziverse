@@ -11,7 +11,6 @@ type Props = {
 
 export const CreateAnswerForm: React.FC<Props> = ({ addAnswer, questionIndex }) => {
   const [answerText, setAnswerText] = useState("");
-  const [isCorrect, setIsCorrect] = useState(false);
 
   const handleTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setAnswerText(e.target.value);
@@ -19,9 +18,8 @@ export const CreateAnswerForm: React.FC<Props> = ({ addAnswer, questionIndex }) 
 
   const handleAddAnswer = () => {
     if (answerText.trim() === "") return;
-    addAnswer({ text: answerText, isCorrect }, questionIndex);
+    addAnswer({ text: answerText }, questionIndex);
     setAnswerText("");
-    setIsCorrect(false);
   };
 
   return (
