@@ -14,13 +14,6 @@ type Test = {
   title: string;
 };
 
-/* ISO -> dd/mm/yyyy hh:mm */
-const convertDate = (iso: string) => {
-  const date = iso.slice(0, 10);
-  const time = iso.slice(11, 16);
-  return date + " " + time;
-};
-
 export const CoursePage: React.FC = () => {
   const navigate = useNavigate();
   const [isOpenModal, setIsOpenModal] = useState(false);
@@ -80,12 +73,7 @@ export const CoursePage: React.FC = () => {
         <div className={scss.testList}>
           {tests.length &&
             tests.map(({ id, title, timeLimit, startDate }: Test) => (
-              <TestItem
-                key={id}
-                title={title}
-                startDate={convertDate(startDate)}
-                timeLimit={timeLimit}
-              />
+              <TestItem key={id} title={title} startDate={startDate} timeLimit={timeLimit} />
             ))}
         </div>
       </div>
