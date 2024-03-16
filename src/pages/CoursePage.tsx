@@ -5,22 +5,25 @@ import scss from "@styles/pages/CoursePage.module.scss";
 import { TestItem } from "@components/TestItem";
 import { CustomButton, Modal } from "@components";
 import { CreateTestForm } from "@components/CreateTestForm";
+import { useGetTestsQuery } from "@store/api/testsApi";
 
-const tests = [
-  {
-    id: 1,
-    title: "Super Quiz",
-    timeLimit: 30,
-    createdAt: "28.01.2024",
-  },
-];
+type Test = {
+  id: number;
+  createdAt: string;
+  timeLimit: number;
+  title: string;
+};
 
 export const CoursePage: React.FC = () => {
   const navigate = useNavigate();
   const [isOpenModal, setIsOpenModal] = useState(false);
 
   const { id } = useParams<{ id: string }>();
-  const { data: courseData, isError } = useGetCourseByIdQuery(id || "");
+  const {
+    data: courseData,
+    isError,
+    isLoading: courseDataIsLoading,
+  } = useGetCourseByIdQuery(id || "");
   const { id: courseId, author, title, description } = courseData || {};
 
   useEffect(() => {
@@ -28,6 +31,9 @@ export const CoursePage: React.FC = () => {
       navigate("/not-found");
     }
   }, [navigate, isError]);
+
+  const { data: tests, isLoading: testsIsLoading } = useGetTestsQuery(id || "");
+  console.log(tests);
 
   // const toggleSubscribeCourse = () => {};
 
@@ -37,10 +43,12 @@ export const CoursePage: React.FC = () => {
     setIsOpenModal((prev) => !prev);
   };
 
+  if (testsIsLoading || courseDataIsLoading) return <div>Loading...</div>;
+
   return (
     <>
       {isOpenModal && (
-        <Modal handleModal={handleModal} style={{width: 800, padding: 10}}>
+        <Modal handleModal={handleModal} style={{ width: 800, padding: 10 }}>
           <CreateTestForm courseId={courseId} />
         </Modal>
       )}
@@ -64,8 +72,8 @@ export const CoursePage: React.FC = () => {
         </div>
         <h3>List of tests:</h3>
         <div className={scss.testList}>
-          {tests &&
-            tests.map(({ id, title, timeLimit, createdAt }) => (
+          {tests.length &&
+            tests.map(({ id, title, timeLimit, createdAt }: Test) => (
               <TestItem key={id} title={title} createdAt={createdAt} timeLimit={timeLimit} />
             ))}
         </div>
