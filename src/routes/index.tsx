@@ -1,6 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
-import { Auth, CoursePage, NotFound, Root } from "@pages";
-import { Courses } from "@pages";
+import { Auth, CoursePage, Courses, TestPage, NotFound, Root } from "@pages";
 
 export const router = createBrowserRouter([
   {
@@ -12,8 +11,12 @@ export const router = createBrowserRouter([
         element: <Courses />,
       },
       {
-        path: 'course/:id',
-        element: <CoursePage />
+        path: "course/:id",
+        element: <CoursePage />,
+      },
+      {
+        path: "course/:id/test/:id",
+        element: <TestPage />,
       },
     ],
   },
