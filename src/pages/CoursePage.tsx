@@ -33,6 +33,13 @@ export const CoursePage: React.FC = () => {
   }, [navigate, isError]);
 
   const { data: tests, isLoading: testsIsLoading } = useGetTestsQuery(id || "");
+  const sortedByDateTests: Test[] =
+    tests &&
+    tests
+      .slice()
+      .sort(
+        (a: Test, b: Test) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime()
+      );
 
   // const toggleSubscribeCourse = () => {};
 
@@ -71,8 +78,8 @@ export const CoursePage: React.FC = () => {
         </div>
         <h3>List of tests:</h3>
         <div className={scss.testList}>
-          {tests.length &&
-            tests.map(({ id, title, timeLimit, startDate }: Test) => (
+          {sortedByDateTests.length &&
+            sortedByDateTests.map(({ id, title, timeLimit, startDate }: Test) => (
               <TestItem key={id} title={title} startDate={startDate} timeLimit={timeLimit} />
             ))}
         </div>
