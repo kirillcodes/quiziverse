@@ -80,7 +80,13 @@ export const CoursePage: React.FC = () => {
         <div className={scss.testList}>
           {sortedByDateTests.length &&
             sortedByDateTests.map(({ id, title, timeLimit, startDate }: Test) => (
-              <TestItem key={id} title={title} startDate={startDate} timeLimit={timeLimit} />
+              <TestItem
+                key={id}
+                testId={id}
+                title={title}
+                startDate={startDate}
+                timeLimit={timeLimit}
+              />
             ))}
         </div>
       </div>
