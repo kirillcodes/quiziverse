@@ -5,9 +5,11 @@ import { CreateTestDto, QuestionDto, AnswerDto } from "@dto/create-test.dto";
 import { useCreateTestMutation } from "@store/api/testsApi";
 import { CustomInput } from "./CustomInput";
 import { CustomButton } from "./CustomButton";
+import { QuestionItem } from "./QuestionItem";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import scss from "@styles/components/CreateTestForm.module.scss";
+import { AnswerItem } from "./AnswerItem";
 
 type Props = {
   courseId: string;
@@ -33,7 +35,7 @@ export const CreateTestForm: React.FC<Props> = ({ courseId }) => {
     };
 
     calculateTotalPoints();
-  }, [formData.questions])
+  }, [formData.questions]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData((prevData) => ({
@@ -134,7 +136,9 @@ export const CreateTestForm: React.FC<Props> = ({ courseId }) => {
         />
       </div>
       <div className={scss.additionalSettings}>
-        <h3 className={scss.totalScore}>Total score: <span>{totalPoints}</span></h3>
+        <h3 className={scss.totalScore}>
+          Total score: <span>{totalPoints}</span>
+        </h3>
         <div className={scss.datePicker}>
           <h3 className={scss.startDate}>Start Date:</h3>
           <DatePicker
@@ -147,7 +151,7 @@ export const CreateTestForm: React.FC<Props> = ({ courseId }) => {
                 placeholder="Select start date"
                 value={formData.startDate.toString()}
                 handleInput={() => {}}
-                style={{width: 190}}
+                style={{ width: 190 }}
               />
             }
             selected={formData.startDate}
@@ -161,12 +165,9 @@ export const CreateTestForm: React.FC<Props> = ({ courseId }) => {
         </div>
       </div>
       {formData.questions.length ? (
-        <div className={scss.questionList}>
+        <div className={scss.questionsList}>
           {formData.questions.map((question, questionIndex) => (
-            <div key={questionIndex} className={scss.questionBlock}>
-              <p>
-                {questionIndex + 1}: {question.text}
-              </p>
+            <QuestionItem text={question.text} index={questionIndex + 1} key={questionIndex}>
               <div className={scss.pointsBlock}>
                 <span>Points:</span>
                 <CustomInput
@@ -176,24 +177,22 @@ export const CreateTestForm: React.FC<Props> = ({ courseId }) => {
                   style={{ width: 80 }}
                 />
               </div>
-              <ul>
+              <div className={scss.answersList}>
                 {question.answers.map((answer, answerIndex) => (
-                  <li key={answerIndex}>
-                    <input
-                      type="radio"
-                      name={`rightAnswer_${questionIndex}`}
-                      value={answerIndex}
-                      checked={question.rightAnswer === answerIndex}
-                      onChange={() =>
-                        handleRightAnswerChange(questionIndex, answerIndex, question.points)
-                      }
-                    />
-                    {answer.text}
-                  </li>
+                  <AnswerItem
+                    text={answer.text}
+                    key={answerIndex}
+                    name={"rightAnswer_" + questionIndex}
+                    value={answerIndex}
+                    checked={question.rightAnswer === answerIndex}
+                    handleSelect={() =>
+                      handleRightAnswerChange(questionIndex, answerIndex, question.points)
+                    }
+                  />
                 ))}
-              </ul>
+              </div>
               <CreateAnswerForm questionIndex={questionIndex} addAnswer={addAnswer} />
-            </div>
+            </QuestionItem>
           ))}
         </div>
       ) : null}

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import scss from "@styles/pages/TestPage.module.scss";
 import { useGetTestQuery } from "@store/api/testsApi";
 import { useNavigate, useParams } from "react-router-dom";
+import { AnswerItem, QuestionItem } from "@components";
 
 type PostData = {
   [key: number]: number;
@@ -33,25 +34,20 @@ export const TestPage: React.FC = () => {
       <h2>{data?.title}</h2>
       <div className={scss.questionsList}>
         {data?.questions.map((question, questionIndex) => (
-          <div className={scss.question} key={question.id}>
-            <h3>
-              {questionIndex + 1}. {question.text}
-            </h3>
-            <ul className={scss.answersList}>
+          <QuestionItem index={questionIndex + 1} text={question.text} key={question.id}>
+            <div className={scss.answersList}>
               {question.answers.map((answer, answerIndex) => (
-                <li className={scss.answer} key={answerIndex}>
-                  <input
-                    type="radio"
-                    className={scss.answerRadio}
-                    value={answerIndex}
-                    checked={postData[question.id] === answerIndex}
-                    onChange={() => selectAnswer(question.id, answerIndex)}
-                  />
-                  {answer.text}
-                </li>
+                <AnswerItem
+                  key={answer.id}
+                  text={answer.text}
+                  value={answerIndex}
+                  name={"answer_" + answer.id}
+                  handleSelect={() => selectAnswer(question.id, answerIndex)}
+                  checked={postData[question.id] === answerIndex}
+                />
               ))}
-            </ul>
-          </div>
+            </div>
+          </QuestionItem>
         ))}
       </div>
     </div>
