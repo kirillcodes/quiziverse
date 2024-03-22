@@ -17,6 +17,7 @@ type Test = {
   id: number;
   title: string;
   timeLimit: number;
+  startDate: Date | string;
   questions: Quesiton[];
   status?: number;
 };

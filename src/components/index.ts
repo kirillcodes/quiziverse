@@ -6,3 +6,4 @@ export { CustomButton } from "./CustomButton";
 export { Modal } from "./Modal";
 export { AnswerItem } from "./AnswerItem";
 export { QuestionItem } from "./QuestionItem";
+export { ProgressController } from "./ProgressController";
