@@ -1,0 +1,35 @@
+.progressController {
+    position: sticky;
+    top: 5px;
+    display: flex;
+    justify-content: center;
+
+    .info {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 250px;
+      padding: 7px 0;
+      border-radius: 5px;
+      text-shadow: #FFF 0 0 7px;
+      transition: all 0.5s ease-in-out;
+      backdrop-filter: blur(2px);
+
+      border: 1px solid hsla(120, 100%, 75%, 1);
+      background-color: hsla(120, 100%, 75%, 0.2);
+
+      .timer {
+        margin-left: 10px;
+      }
+    }
+
+    .red {
+      border: 1px solid hsla(0, 100%, 75%, 1);
+      background-color: hsla(0, 100%, 75%, 0.2);
+    }
+
+    .yellow {
+      border: 1px solid hsla(52, 100%, 56%, 1);
+      background-color: hsla(50, 100%, 75%, 0.2);
+    }
+}
