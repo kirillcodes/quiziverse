@@ -1,8 +1,14 @@
 import React, { useEffect, useState } from "react";
 import scss from "@styles/pages/TestPage.module.scss";
-import { useGetTestQuery } from "@store/api/testsApi";
+import { useGetTestQuery, useSubmitResultsMutation } from "@store/api/testsApi";
 import { useNavigate, useParams } from "react-router-dom";
-import { AnswerItem, QuestionItem, ProgressController } from "@components";
+import {
+  AnswerItem,
+  QuestionItem,
+  ProgressController,
+  CustomButton,
+  MessageError,
+} from "@components";
 
 type PostData = {
   [key: number]: number;
@@ -14,6 +20,8 @@ export const TestPage: React.FC = () => {
   const { data, isLoading, isError } = useGetTestQuery({ courseId, testId });
   const [postData, setPostData] = useState<PostData>({});
   const [timePassed, setTimePassed] = useState<number>(0);
+  const [submitResults, { isLoading: isSending, isSuccess, isError: isErrorSending }] =
+    useSubmitResultsMutation();
 
   useEffect(() => {
     if (isError || data?.status === 404) {
@@ -40,10 +48,22 @@ export const TestPage: React.FC = () => {
   };
 
   const submitData = () => {
-    console.log("sending data to server");
+    submitResults({ courseId, testId, ...postData });
   };
 
-  if (isLoading) return <div>Loading...</div>;
+  const handleBackToCourse = () => {
+    navigate(`/course/${courseId}`);
+  };
+
+  if (isLoading || isSending) return <div>Loading...</div>;
+  if (isErrorSending) return <MessageError title="Failed: Results was not received" />;
+  if (isSuccess)
+    return (
+      <div className={scss.successed}>
+        <h3>Successed: Wait for results announcements</h3>
+        <CustomButton title="Back to course" handleSubmit={handleBackToCourse} />
+      </div>
+    );
 
   return (
     <div className={scss.testPage}>
@@ -72,6 +92,7 @@ export const TestPage: React.FC = () => {
           </QuestionItem>
         ))}
       </div>
+      <CustomButton title="Finish" handleSubmit={submitData} style={{ marginTop: 10 }} />
     </div>
   );
 };

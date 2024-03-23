@@ -22,6 +22,10 @@ type Test = {
   status?: number;
 };
 
+type SubmitResults = {
+  [key: number]: number;
+};
+
 export const testsApi = createApi({
   reducerPath: "testsApi",
   tagTypes: ["TestsList"],
@@ -48,7 +52,22 @@ export const testsApi = createApi({
     getTest: builder.query<Test, { courseId: string | undefined; testId: string | undefined }>({
       query: ({ courseId, testId }) => `courses/${courseId}/tests/${testId}`,
     }),
+    submitResults: builder.mutation<
+      SubmitResults,
+      { courseId: string | undefined; testId: string | undefined }
+    >({
+      query: ({ courseId, testId, ...body }) => ({
+        url: `courses/${courseId}/tests/${testId}`,
+        method: "POST",
+        body,
+      }),
+    }),
   }),
 });
 
-export const { useCreateTestMutation, useGetTestsQuery, useGetTestQuery } = testsApi;
+export const {
+  useCreateTestMutation,
+  useGetTestsQuery,
+  useGetTestQuery,
+  useSubmitResultsMutation,
+} = testsApi;
