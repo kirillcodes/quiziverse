@@ -7,12 +7,11 @@ type Props = {
   checked: boolean;
   name: string;
   text: string;
-  key?: React.Key;
 };
 
-export const AnswerItem: React.FC<Props> = ({ value, handleSelect, checked, name, text, key }) => {
+export const AnswerItem: React.FC<Props> = ({ value, handleSelect, checked, name, text }) => {
   return (
-    <div className={scss.answerItem} key={key}>
+    <div className={scss.answerItem}>
       <input
         type="radio"
         name={name}

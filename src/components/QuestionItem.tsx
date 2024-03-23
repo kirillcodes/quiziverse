@@ -5,12 +5,11 @@ type Props = {
   index: number;
   text: string;
   children: ReactNode | ReactElement;
-  key?: React.Key;
 };
 
-export const QuestionItem: React.FC<Props> = ({ index, text, children, key }) => {
+export const QuestionItem: React.FC<Props> = ({ index, text, children, }) => {
   return (
-    <div className={scss.questionItem} key={key}>
+    <div className={scss.questionItem}>
       <h3>
         {index}. {text}
       </h3>
