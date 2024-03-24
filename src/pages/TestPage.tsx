@@ -24,7 +24,7 @@ export const TestPage: React.FC = () => {
     useSubmitResultsMutation();
 
   useEffect(() => {
-    if (isError || data?.status === 404) {
+    if (isError || data?.status === 404 || data?.status === 403) {
       navigate("/not-found");
     }
   }, [isError, navigate, data]);
@@ -70,12 +70,12 @@ export const TestPage: React.FC = () => {
       <h2>{data?.title}</h2>
       <ProgressController
         timeLimit={timePassed}
-        totalAnswersCount={data?.questions.length}
+        totalAnswersCount={data?.questions?.length}
         selectedAnswersCount={Object.keys(postData).length}
         submitData={submitData}
       />
       <div className={scss.questionsList}>
-        {data?.questions.map((question, questionIndex) => (
+        {data?.questions?.map((question, questionIndex) => (
           <QuestionItem index={questionIndex + 1} text={question.text} key={question.id}>
             <div className={scss.answersList}>
               {question.answers.map((answer, answerIndex) => (
