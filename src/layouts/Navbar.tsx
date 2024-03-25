@@ -5,6 +5,7 @@ import Logo from "@assets/images/logo-universe.png";
 import { useEffect, useState } from "react";
 import { CustomButton, CustomInput, Modal } from "@components";
 import { useCreateCourseMutation, useGetAllCoursesQuery } from "@store/api/coursesApi";
+import { useGetRoleQuery } from "@store/api/authApi";
 
 type Course = {
   id: number;
@@ -42,18 +43,17 @@ const filterCourses = (searchText: string, listOfCourses: Course[]): Course[] =>
 
 export const Navbar = () => {
   const navigate = useNavigate();
-
   const [createCourseMutation] = useCreateCourseMutation();
   const { data: allCourses = [] } = useGetAllCoursesQuery({});
-
   const [isOpenDropdown, setIsOpenDropdown] = useState(false);
   const [isOpenModal, setIsOpenModal] = useState(false);
-
   const [courseTitle, setCourseTitle] = useState("");
   const [courseDescription, setCourseDescription] = useState("");
-
   const [inputSearch, setInputSearch] = useState("");
   const [courses, setCourses] = useState<Course[]>([]);
+  const {
+    data: { role },
+  } = useGetRoleQuery({});
 
   const toggleOpenDropdown = () => {
     setIsOpenDropdown((prev) => !prev);
@@ -139,9 +139,11 @@ export const Navbar = () => {
           onChange={(e) => handleInputSearch(e)}
         />
         <MdOutlineSearch className={scss.searchIcon} />
-        <abbr title="Create course" onClick={toggleOpenModal}>
-          <MdAdd className={scss.createCourse} />
-        </abbr>
+        {role && role === "TEACHER" ? (
+          <abbr title="Create course" onClick={toggleOpenModal}>
+            <MdAdd className={scss.createCourse} />
+          </abbr>
+        ) : null}
       </div>
       {inputSearch.trim() && courses.length && (
         <div className={scss.dropdownCoursesList}>

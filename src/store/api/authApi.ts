@@ -4,7 +4,7 @@ import { interceptorQuery } from "./interceptorQuery";
 type authTypes = {
   email: string;
   password: string;
-}
+};
 
 export const authApi = createApi({
   reducerPath: "authApi",
@@ -16,7 +16,10 @@ export const authApi = createApi({
     registration: builder.mutation({
       query: (body: authTypes) => ({ url: "auth/sign-up", method: "POST", body }),
     }),
+    getRole: builder.query({
+      query: () => ({ url: "auth/role" }),
+    }),
   }),
 });
 
-export const { useLoginMutation, useRegistrationMutation } = authApi;
+export const { useLoginMutation, useRegistrationMutation, useGetRoleQuery } = authApi;
