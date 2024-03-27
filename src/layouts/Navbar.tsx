@@ -51,9 +51,7 @@ export const Navbar = () => {
   const [courseDescription, setCourseDescription] = useState("");
   const [inputSearch, setInputSearch] = useState("");
   const [courses, setCourses] = useState<Course[]>([]);
-  const {
-    data: { role },
-  } = useGetRoleQuery({});
+  const { data: roleData } = useGetRoleQuery({});
 
   const toggleOpenDropdown = () => {
     setIsOpenDropdown((prev) => !prev);
@@ -139,7 +137,7 @@ export const Navbar = () => {
           onChange={(e) => handleInputSearch(e)}
         />
         <MdOutlineSearch className={scss.searchIcon} />
-        {role && role === "TEACHER" ? (
+        {roleData && roleData.role === "TEACHER" ? (
           <abbr title="Create course" onClick={toggleOpenModal}>
             <MdAdd className={scss.createCourse} />
           </abbr>

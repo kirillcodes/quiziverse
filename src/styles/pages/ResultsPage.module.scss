@@ -1,0 +1,77 @@
+%flex-center-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.resultsPage {
+  .title {
+    font-size: 1.2rem;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .aboutData {
+    @extend %flex-center-between;
+    margin: 0 18px
+  }
+
+  .line {
+    height: 2px;
+    margin: 10px 0 15px 0;
+    background-color: var(--accent-color);
+    border-radius: 1px
+  }
+
+  .usersList {
+    .resultItem {
+      @extend %flex-center-between;
+      padding: 15px;
+      margin-top: 10px;
+      background-color: var(--accent-color);
+      border-radius: 10px;
+      border: 2px solid var(--accent-color);
+      cursor: pointer;
+      transition: all 0.1s ease-in-out;
+
+      &:hover {
+        background-color: var(--bg-color);
+
+        .resultInfo .scale {
+          opacity: 1;
+        }
+      }
+
+      .resultInfo {
+        @extend %flex-center-between;          
+
+        .scale {
+          padding: 2px;
+          opacity: 0;
+          margin-right: 10px;
+          width: 80px;
+          height: 10px;
+          background-color: #181b1f; 
+          border-radius: 5px;
+          transition: all 0.1s ease-in-out;
+
+          .fillScale {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(to right, #fff, #B3F1FF);
+            border-radius: 5px;
+          }
+        }
+        .score {
+          .scoreNum {
+            margin-right: 10px;
+          } 
+
+          .scorePercentage {
+            color: #777;
+          }
+        }
+      }
+    }
+  }
+}

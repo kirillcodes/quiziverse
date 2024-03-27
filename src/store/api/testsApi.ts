@@ -61,6 +61,11 @@ export const testsApi = createApi({
         method: "POST",
         body,
       }),
+      invalidatesTags: [{ type: "TestsList", id: "LIST" }],
+    }),
+    getResultsList: builder.query({
+      query: ({ courseId, testId }: { courseId: string | undefined; testId: string | undefined }) =>
+        `courses/${courseId}/tests/${testId}/results`,
     }),
   }),
 });
@@ -70,4 +75,5 @@ export const {
   useGetTestsQuery,
   useGetTestQuery,
   useSubmitResultsMutation,
+  useGetResultsListQuery,
 } = testsApi;
