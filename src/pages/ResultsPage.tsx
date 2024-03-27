@@ -45,14 +45,12 @@ export const ResultsPage: React.FC = () => {
                     style={{ width: `${calcPercentage(score, globalScore)}%` }}
                   ></div>
                 </div>
-                <div className={scss.score}>
-                  <span className={scss.scoreNum}>
-                    {score} / {globalScore}
-                  </span>
-                  <span className={scss.scorePercentage}>
-                    [ {calcPercentage(score, globalScore)}% ]
-                  </span>
-                </div>
+                <span className={scss.scorePercentage}>
+                  [ {calcPercentage(score, globalScore)}% ]
+                </span>
+                <span className={scss.score}>
+                  {score} / {globalScore}
+                </span>
               </div>
             </div>
           ))}

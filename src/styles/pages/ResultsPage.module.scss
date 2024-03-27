@@ -37,8 +37,14 @@
       &:hover {
         background-color: var(--bg-color);
 
-        .resultInfo .scale {
-          opacity: 1;
+        .resultInfo {
+          .scale {
+            opacity: 1;
+          }
+
+          .scorePercentage {
+            opacity: 1;
+          }
         }
       }
 
@@ -50,9 +56,10 @@
           opacity: 0;
           margin-right: 10px;
           width: 80px;
-          height: 10px;
+          height: 12px;
           background-color: #181b1f; 
-          border-radius: 5px;
+          border-radius: 7px;
+          border: 2px solid var(--accent-color);
           transition: all 0.1s ease-in-out;
 
           .fillScale {
@@ -62,14 +69,12 @@
             border-radius: 5px;
           }
         }
-        .score {
-          .scoreNum {
-            margin-right: 10px;
-          } 
 
-          .scorePercentage {
-            color: #777;
-          }
+        .scorePercentage {
+          opacity: 0;
+          color: #777;
+          margin-right: 10px;
+          transition: all 0.1s ease-in-out;
         }
       }
     }
