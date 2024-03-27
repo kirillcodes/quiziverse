@@ -1,3 +1,3 @@
 import { convertDateFromISO } from "./convertDateFromISO";
-
-export { convertDateFromISO };
+import { calcPercentage } from "./calcPercentage";
+export { convertDateFromISO, calcPercentage };

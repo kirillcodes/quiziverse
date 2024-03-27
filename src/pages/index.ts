@@ -4,3 +4,4 @@ export { Auth } from "./Auth";
 export { NotFound } from "./NotFound";
 export { CoursePage } from "./CoursePage";
 export { TestPage } from "./TestPage";
+export { ResultsPage } from "./ResultsPage";
