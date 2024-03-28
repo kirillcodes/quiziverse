@@ -1,5 +1,14 @@
 import { createBrowserRouter } from "react-router-dom";
-import { Auth, CoursePage, Courses, ResultsPage, TestPage, NotFound, Root } from "@pages";
+import {
+  Auth,
+  CoursePage,
+  Courses,
+  ResultsPage,
+  TestPage,
+  NotFound,
+  Root,
+  UserResults,
+} from "@pages";
 
 export const router = createBrowserRouter([
   {
@@ -21,6 +30,10 @@ export const router = createBrowserRouter([
       {
         path: "course/:courseId/test/:testId/results",
         element: <ResultsPage />,
+      },
+      {
+        path: "course/:courseId/test/:testId/results/:studentId",
+        element: <UserResults />,
       },
     ],
   },

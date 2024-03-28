@@ -67,6 +67,10 @@ export const testsApi = createApi({
       query: ({ courseId, testId }: { courseId: string | undefined; testId: string | undefined }) =>
         `courses/${courseId}/tests/${testId}/results`,
     }),
+    getUserResults: builder.query({
+      query: ({ courseId, testId, studentId }) =>
+        `courses/${courseId}/tests/${testId}/results/${studentId}`,
+    }),
   }),
 });
 
@@ -76,4 +80,5 @@ export const {
   useGetTestQuery,
   useSubmitResultsMutation,
   useGetResultsListQuery,
+  useGetUserResultsQuery,
 } = testsApi;
