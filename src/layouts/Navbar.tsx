@@ -24,7 +24,7 @@ const dropdownMenu = [
   },
   {
     title: "Logout",
-    path: "",
+    path: "/auth",
   },
 ];
 
@@ -110,7 +110,7 @@ export const Navbar = () => {
               type="text"
               value={courseTitle}
               handleInput={changeCourseTitle}
-              placeholder="Mathematics 2 year 1 semester"
+              placeholder="Software Engineering"
               style={{ margin: "10px 0 20px 0" }}
             />
             <label>Set a description:</label>
@@ -159,7 +159,6 @@ export const Navbar = () => {
         </div>
       )}
       <div className={scss.personal}>
-        {/* <button>EN</button> */}
         <div className={scss.profile} onClick={toggleOpenDropdown}>
           <MdOutlinePersonOutline className={scss.profileIcon} />
         </div>

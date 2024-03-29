@@ -24,9 +24,10 @@ export const Card = ({ count, imgURL, title, author, id }: CardProps) => {
       </button>
       <img src={imgURL} />
       <div className={scss.info}>
-        <h3>
-          <span>{count}.</span> {title}
-        </h3>
+        <div className={scss.wrapper}>
+          <span className={scss.count}>{count}.</span>
+          <h3 className={scss.title}>{title}</h3>
+        </div>
         <div>
           <p>{author}</p>
           <span>ID: {id}</span>

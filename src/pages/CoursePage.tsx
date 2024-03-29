@@ -51,13 +51,15 @@ export const CoursePage: React.FC = () => {
 
   if (testsIsLoading || courseDataIsLoading) return <div>Loading...</div>;
 
+  if (isOpenModal)
+    return (
+      <Modal handleModal={handleModal} style={{ width: 800, padding: 10 }}>
+        <CreateTestForm courseId={courseId} />
+      </Modal>
+    );
+
   return (
     <>
-      {isOpenModal && (
-        <Modal handleModal={handleModal} style={{ width: 800, padding: 10 }}>
-          <CreateTestForm courseId={courseId} />
-        </Modal>
-      )}
       <div className={scss.coursePage}>
         <div className={scss.info}>
           <h1 className={scss.title}>{title}</h1>
