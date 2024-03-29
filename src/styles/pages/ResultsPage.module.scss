@@ -4,6 +4,23 @@
   justify-content: space-between;
 }
 
+.modal {
+  > h2 {
+    font-size: 1.2rem;
+    text-align: center;
+    margin-bottom: 30px;
+  }
+
+  > p {
+    margin-bottom: 30px;
+    text-align: center;
+    
+    > span {
+      color: lightcoral;
+    }
+  }
+}
+
 .resultsPage {
   .title {
     font-size: 1.2rem;

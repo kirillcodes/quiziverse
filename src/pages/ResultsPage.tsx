@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import scss from "@styles/pages/ResultsPage.module.scss";
 import { useNavigate, useParams } from "react-router-dom";
-import { useGetResultsListQuery } from "@store/api/testsApi";
+import { useDeleteTestMutation, useGetResultsListQuery } from "@store/api/testsApi";
 import { calcPercentage } from "@utils";
-import { CustomButton } from "@components";
+import { CustomButton, Modal } from "@components";
 
 type ResultItem = {
   username: string;
@@ -14,19 +14,50 @@ type ResultItem = {
 };
 
 export const ResultsPage: React.FC = () => {
+  const [isOpenModal, setIsOpenModal] = useState(false);
   const navigate = useNavigate();
   const { courseId, testId } = useParams();
   const { data: resultsList, isLoading } = useGetResultsListQuery({ courseId, testId });
+  const [deleteTest, { isSuccess: isSuccessDelete }] = useDeleteTestMutation();
 
   const handleUser = (userId: number) => {
     navigate(`/course/${courseId}/test/${testId}/results/${userId}`);
   };
 
-  const handleGoBack = () => {
+  const handleBackToCourse = () => {
     navigate(`/course/${courseId}`);
   };
 
+  const handleCloseTest = () => {
+    deleteTest({ courseId, testId });
+  };
+
   if (isLoading) return <div>Loading...</div>;
+  if (isOpenModal) {
+    return (
+      <Modal handleModal={() => setIsOpenModal((prev) => !prev)}>
+        {isSuccessDelete ? (
+          <div className={scss.modal}>
+            <h2>Test was deleted!</h2>
+            <CustomButton title="Back to course" handleSubmit={handleBackToCourse} />
+          </div>
+        ) : (
+          <div className={scss.modal}>
+            <h2>Close test</h2>
+            <p>
+              <span>Important!</span> If you close the test, all results, including the test, are
+              deleted permanently.
+            </p>
+            <CustomButton
+              title="Close test"
+              handleSubmit={handleCloseTest}
+              style={{ backgroundColor: "var(--red-color)" }}
+            />
+          </div>
+        )}
+      </Modal>
+    );
+  }
 
   return (
     <div className={scss.resultsPage}>
@@ -58,7 +89,12 @@ export const ResultsPage: React.FC = () => {
             </div>
           ))}
       </div>
-      <CustomButton title="Go back" handleSubmit={handleGoBack} />
+      <CustomButton title="Go back" handleSubmit={handleBackToCourse} />
+      <CustomButton
+        title="Close test"
+        handleSubmit={() => setIsOpenModal((prev) => !prev)}
+        style={{ marginTop: 10, backgroundColor: "var(--red-color)" }}
+      />
     </div>
   );
 };

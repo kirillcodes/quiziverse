@@ -71,6 +71,12 @@ export const testsApi = createApi({
       query: ({ courseId, testId, studentId }) =>
         `courses/${courseId}/tests/${testId}/results/${studentId}`,
     }),
+    deleteTest: builder.mutation({
+      query: ({ courseId, testId }) => ({
+        url: `courses/${courseId}/tests/${testId}/delete`,
+        method: "DELETE",
+      }),
+    }),
   }),
 });
 
@@ -81,4 +87,5 @@ export const {
   useSubmitResultsMutation,
   useGetResultsListQuery,
   useGetUserResultsQuery,
+  useDeleteTestMutation,
 } = testsApi;
