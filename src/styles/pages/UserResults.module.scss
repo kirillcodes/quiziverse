@@ -1,0 +1,28 @@
+.userResults {
+  .title {
+    font-size: 1.2rem;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .user {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+
+    .userName > a {
+      font-size: 0.9rem;
+      color: var(--gray-color);
+    }
+
+    .score { 
+      text-align: end;
+
+      > span {
+        font-size: 0.9rem;
+        color: var(--gray-color);
+      } 
+    }
+  }
+}
