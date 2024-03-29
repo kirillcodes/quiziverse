@@ -39,6 +39,10 @@
       overflow: hidden;
       text-overflow: ellipsis;
     }
+
+    > div {
+      min-width: 140px;
+    }
   }
 
   .allInfo {

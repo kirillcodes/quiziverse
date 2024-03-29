@@ -1,5 +1,6 @@
 .modal {
-  position: absolute;
+  overflow: hidden;
+  position: fixed;
   left: 0;
   top: 0;
   z-index: 55;
@@ -15,6 +16,7 @@
     padding: 40px;
     background-color: var(--bg-color);
     border-radius: 10px;
+    overflow: hidden;
 
     .close {
       position: absolute;

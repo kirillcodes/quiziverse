@@ -62,17 +62,27 @@
     height: 95px;
     padding: 13px;
     background-color: var(--accent-color);
+    
+    .wrapper {
+      display: flex;
+      justify-content: start;
+      align-items: center;
 
-    > h3 {
-      font-size: 1.1rem;
-      font-weight: 400;
-
-      @media (max-width: 375px) {
+      .count {
         font-size: 1rem;
+        color: var(--gray-color);
+        margin-right: 5px;
       }
 
-      > span {
-        color: var(--gray-color);
+      .title {
+        font-size: 1.1rem;
+        font-weight: 400;
+        overflow: hidden;
+        text-overflow: ellipsis; 
+
+        @media (max-width: 375px) {
+          font-size: 1rem;
+        }
       }
     }
 
