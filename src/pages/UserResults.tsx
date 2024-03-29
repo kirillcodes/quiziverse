@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import scss from "@styles/pages/UserResults.module.scss";
 import { useGetUserResultsQuery } from "@store/api/testsApi";
-import { useParams } from "react-router-dom";
-import { AnswerItem, MessageError, QuestionItem } from "@components";
+import { useNavigate, useParams } from "react-router-dom";
+import { AnswerItem, CustomButton, MessageError, QuestionItem } from "@components";
 import { calcPercentage } from "@utils";
 
 type Answer = {
@@ -50,16 +50,13 @@ type ErrorType = {
 };
 
 export const UserResults: React.FC = () => {
+  const navigate = useNavigate();
   const { courseId, testId, studentId } = useParams<UserResultsParams>();
   const { data, isError, isLoading, error } = useGetUserResultsQuery({
     courseId,
     testId,
     studentId,
   });
-
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
 
   if (isLoading) return <div>Loading...</div>;
   if (isError) {
@@ -68,6 +65,10 @@ export const UserResults: React.FC = () => {
   }
 
   const { test, user, userAnswers, score, globalScore } = data as TestResultData;
+
+  const handleBoBack = () => {
+    navigate(`/course/${courseId}/test/${testId}/results`);
+  };
 
   return (
     <div className={scss.userResults}>
@@ -94,6 +95,7 @@ export const UserResults: React.FC = () => {
           />
         ))}
       </div>
+      <CustomButton title="Go back" handleSubmit={handleBoBack} />
     </div>
   );
 };

@@ -1,8 +1,9 @@
 import React from "react";
 import scss from "@styles/pages/ResultsPage.module.scss";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useGetResultsListQuery } from "@store/api/testsApi";
 import { calcPercentage } from "@utils";
+import { CustomButton } from "@components";
 
 type ResultItem = {
   username: string;
@@ -13,10 +14,16 @@ type ResultItem = {
 };
 
 export const ResultsPage: React.FC = () => {
+  const navigate = useNavigate();
   const { courseId, testId } = useParams();
   const { data: resultsList, isLoading } = useGetResultsListQuery({ courseId, testId });
-  const handleUser = (testResultId: number, userId: number) => {
-    console.log(testResultId + " " + userId);
+
+  const handleUser = (userId: number) => {
+    navigate(`/course/${courseId}/test/${testId}/results/${userId}`);
+  };
+
+  const handleGoBack = () => {
+    navigate(`/course/${courseId}`);
   };
 
   if (isLoading) return <div>Loading...</div>;
@@ -32,11 +39,7 @@ export const ResultsPage: React.FC = () => {
       <div className={scss.usersList}>
         {resultsList &&
           resultsList.map(({ username, userId, globalScore, score, testResultId }: ResultItem) => (
-            <div
-              className={scss.resultItem}
-              onClick={() => handleUser(testResultId, userId)}
-              key={testResultId}
-            >
+            <div className={scss.resultItem} onClick={() => handleUser(userId)} key={testResultId}>
               <p className={scss.username}>{username}</p>
               <div className={scss.resultInfo}>
                 <div className={scss.scale}>
@@ -55,6 +58,7 @@ export const ResultsPage: React.FC = () => {
             </div>
           ))}
       </div>
+      <CustomButton title="Go back" handleSubmit={handleGoBack} />
     </div>
   );
 };

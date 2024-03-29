@@ -24,6 +24,8 @@
   }
 
   .usersList {
+    margin-bottom: 15px;
+
     .resultItem {
       @extend %flex-center-between;
       padding: 15px;
