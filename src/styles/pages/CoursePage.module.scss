@@ -4,6 +4,21 @@
   justify-content: space-between;
 }
 
+.removeCourse {
+  text-align: center;
+
+  > h2 {
+    font-size: 1.2rem;
+  }
+
+  > p {
+    margin: 20px 0;
+    > span {
+      color: lightcoral;
+    }
+  }
+}
+
 .coursePage {
   .info {
     @extend %flex-center-between;

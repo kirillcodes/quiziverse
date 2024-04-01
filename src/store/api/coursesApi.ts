@@ -42,7 +42,11 @@ export const coursesApi = createApi({
       ],
     }),
     deleteCourse: builder.mutation({
-      query: (id: string | undefined) => ({ url: `courses/delete/${id}`, method: "DELETE" }),
+      query: (id: string | undefined) => ({ url: `courses/${id}/delete`, method: "DELETE" }),
+      invalidatesTags: [
+        { type: "SignedCourses", id: "LIST" },
+        { type: "AllCourses", id: "LIST" },
+      ],
     }),
     subscribeToCourse: builder.mutation({
       query: (id: string | undefined) => ({ url: `courses/${id}/subscribe`, method: "POST" }),

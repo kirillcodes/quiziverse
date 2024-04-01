@@ -1,5 +1,6 @@
 import { useNavigate, useParams } from "react-router-dom";
 import {
+  useDeleteCourseMutation,
   useGetCourseByIdQuery,
   useSubscribeToCourseMutation,
   useUnsubscribeFromCourseMutation,
@@ -20,7 +21,8 @@ type Test = {
 
 export const CoursePage: React.FC = () => {
   const navigate = useNavigate();
-  const [isOpenModal, setIsOpenModal] = useState(false);
+  const [isCreateTestModal, setIsCreateTestModal] = useState(false);
+  const [isRemoveCourseModal, setIsRemoveCourseModal] = useState(false);
   const { id } = useParams<{ id: string }>();
   const {
     data: courseData,
@@ -51,6 +53,7 @@ export const CoursePage: React.FC = () => {
 
   const [subscribe, { isLoading: isLoadingSubscribe }] = useSubscribeToCourseMutation();
   const [unsubscribe, { isLoading: isLoadingUnsubscribe }] = useUnsubscribeFromCourseMutation();
+  const [deleteCourse] = useDeleteCourseMutation();
 
   useEffect(() => {
     refetchCourseData().unwrap();
@@ -67,17 +70,36 @@ export const CoursePage: React.FC = () => {
     refetchCourseData();
   };
 
-  const removeCourse = () => {};
-
-  const handleModal = () => {
-    setIsOpenModal((prev) => !prev);
+  const removeCourse = async () => {
+    await deleteCourse(id).unwrap();
+    navigate("/");
   };
 
   if (testsIsLoading || courseDataIsLoading) return <div>Loading...</div>;
-  if (isOpenModal)
+  if (isCreateTestModal)
     return (
-      <Modal handleModal={handleModal} style={{ width: 800, padding: 10 }}>
+      <Modal
+        handleModal={() => setIsCreateTestModal((prev) => !prev)}
+        style={{ width: 800, padding: 10 }}
+      >
         <CreateTestForm courseId={courseId} />
+      </Modal>
+    );
+  if (isRemoveCourseModal)
+    return (
+      <Modal handleModal={() => setIsRemoveCourseModal((prev) => !prev)}>
+        <div className={scss.removeCourse}>
+          <h2>Remove course</h2>
+          <p>
+            <span>Important!</span> All data including tests and results will be permanently
+            deleted.
+          </p>
+          <CustomButton
+            title="Remove"
+            handleSubmit={removeCourse}
+            style={{ backgroundColor: "var(--red-color)" }}
+          />
+        </div>
       </Modal>
     );
 
@@ -94,10 +116,13 @@ export const CoursePage: React.FC = () => {
           <div className={scss.tools}>
             {courseData && isAuthor ? (
               <>
-                <CustomButton title="Add test" handleSubmit={handleModal} />
+                <CustomButton
+                  title="Add test"
+                  handleSubmit={() => setIsCreateTestModal((prev) => !prev)}
+                />
                 <CustomButton
                   title="Remove"
-                  handleSubmit={removeCourse}
+                  handleSubmit={() => setIsRemoveCourseModal((prev) => !prev)}
                   style={{ backgroundColor: "var(--red-color)" }}
                 />
               </>
