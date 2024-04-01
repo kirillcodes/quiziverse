@@ -1,5 +1,9 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { useGetCourseByIdQuery } from "@store/api/coursesApi";
+import {
+  useGetCourseByIdQuery,
+  useSubscribeToCourseMutation,
+  useUnsubscribeFromCourseMutation,
+} from "@store/api/coursesApi";
 import { useEffect, useState } from "react";
 import scss from "@styles/pages/CoursePage.module.scss";
 import { TestItem } from "@components/TestItem";
@@ -17,14 +21,14 @@ type Test = {
 export const CoursePage: React.FC = () => {
   const navigate = useNavigate();
   const [isOpenModal, setIsOpenModal] = useState(false);
-
   const { id } = useParams<{ id: string }>();
   const {
     data: courseData,
     isError,
     isLoading: courseDataIsLoading,
+    refetch: refetchCourseData,
   } = useGetCourseByIdQuery(id || "");
-  const { id: courseId, author, title, description } = courseData || {};
+  const { id: courseId, author, title, description, isAuthor, isSubscribed } = courseData || {};
 
   useEffect(() => {
     if (isError) {
@@ -32,7 +36,11 @@ export const CoursePage: React.FC = () => {
     }
   }, [navigate, isError]);
 
-  const { data: tests, isLoading: testsIsLoading } = useGetTestsQuery(id || "");
+  const {
+    data: tests,
+    isLoading: testsIsLoading,
+    refetch: refetchTestsData,
+  } = useGetTestsQuery(id || "");
   const sortedByDateTests: Test[] =
     tests &&
     tests
@@ -41,7 +49,23 @@ export const CoursePage: React.FC = () => {
         (a: Test, b: Test) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime()
       );
 
-  // const toggleSubscribeCourse = () => {};
+  const [subscribe, { isLoading: isLoadingSubscribe }] = useSubscribeToCourseMutation();
+  const [unsubscribe, { isLoading: isLoadingUnsubscribe }] = useUnsubscribeFromCourseMutation();
+
+  useEffect(() => {
+    refetchCourseData().unwrap();
+    refetchTestsData().unwrap();
+  }, [refetchCourseData, refetchTestsData]);
+
+  const toggleSubscribeCourse = async () => {
+    if (courseData && isSubscribed) {
+      await unsubscribe(id).unwrap();
+    } else {
+      await subscribe(id).unwrap();
+    }
+
+    refetchCourseData();
+  };
 
   const removeCourse = () => {};
 
@@ -50,7 +74,6 @@ export const CoursePage: React.FC = () => {
   };
 
   if (testsIsLoading || courseDataIsLoading) return <div>Loading...</div>;
-
   if (isOpenModal)
     return (
       <Modal handleModal={handleModal} style={{ width: 800, padding: 10 }}>
@@ -69,13 +92,23 @@ export const CoursePage: React.FC = () => {
         <div className={scss.toolsBlock}>
           <span className={scss.author}>{author}</span>
           <div className={scss.tools}>
-            {/* <CustomButton title="Subscribe" handleSubmit={toggleSubscribeCourse} /> */}
-            <CustomButton title="Add test" handleSubmit={handleModal} />
-            <CustomButton
-              title="Remove"
-              handleSubmit={removeCourse}
-              style={{ backgroundColor: "var(--red-color)" }}
-            />
+            {courseData && isAuthor ? (
+              <>
+                <CustomButton title="Add test" handleSubmit={handleModal} />
+                <CustomButton
+                  title="Remove"
+                  handleSubmit={removeCourse}
+                  style={{ backgroundColor: "var(--red-color)" }}
+                />
+              </>
+            ) : (
+              <CustomButton
+                title={isSubscribed ? "Unsubscribe" : "Subscribe"}
+                handleSubmit={toggleSubscribeCourse}
+                disabled={isLoadingSubscribe || isLoadingUnsubscribe}
+                style={isSubscribed ? { backgroundColor: "var(--red-color)", width: 130 } : {}}
+              />
+            )}
           </div>
         </div>
         <h3>List of tests:</h3>

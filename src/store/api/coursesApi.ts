@@ -42,7 +42,21 @@ export const coursesApi = createApi({
       ],
     }),
     deleteCourse: builder.mutation({
-      query: (id: number) => ({ url: `courses/delete/${id}`, method: "DELETE" }),
+      query: (id: string | undefined) => ({ url: `courses/delete/${id}`, method: "DELETE" }),
+    }),
+    subscribeToCourse: builder.mutation({
+      query: (id: string | undefined) => ({ url: `courses/${id}/subscribe`, method: "POST" }),
+      invalidatesTags: [
+        { type: "SignedCourses", id: "LIST" },
+        { type: "AllCourses", id: "LIST" },
+      ],
+    }),
+    unsubscribeFromCourse: builder.mutation({
+      query: (id: string | undefined) => ({ url: `courses/${id}/unsubscribe`, method: "DELETE" }),
+      invalidatesTags: [
+        { type: "SignedCourses", id: "LIST" },
+        { type: "AllCourses", id: "LIST" },
+      ],
     }),
   }),
 });
@@ -53,4 +67,6 @@ export const {
   useGetAllCoursesQuery,
   useCreateCourseMutation,
   useDeleteCourseMutation,
+  useSubscribeToCourseMutation,
+  useUnsubscribeFromCourseMutation,
 } = coursesApi;
