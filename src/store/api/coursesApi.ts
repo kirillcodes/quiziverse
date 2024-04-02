@@ -62,6 +62,13 @@ export const coursesApi = createApi({
         { type: "AllCourses", id: "LIST" },
       ],
     }),
+    setCoverToCourse: builder.mutation({
+      query: ({ id, imageData }: { id: number | undefined; imageData: FormData }) => ({
+        url: `courses/${id}/upload-cover`,
+        method: "PUT",
+        body: imageData,
+      }),
+    }),
   }),
 });
 
@@ -73,4 +80,5 @@ export const {
   useDeleteCourseMutation,
   useSubscribeToCourseMutation,
   useUnsubscribeFromCourseMutation,
+  useSetCoverToCourseMutation,
 } = coursesApi;
