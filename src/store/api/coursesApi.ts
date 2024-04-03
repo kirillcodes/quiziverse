@@ -6,6 +6,12 @@ type createCourseTypes = {
   description: string;
 };
 
+type Course = {
+  id: number;
+  title: string;
+  author: string;
+};
+
 export const coursesApi = createApi({
   reducerPath: "coursesApi",
   tagTypes: ["SignedCourses", "AllCourses"],
@@ -24,15 +30,8 @@ export const coursesApi = createApi({
             ]
           : [{ type: "SignedCourses", id: "LIST" }],
     }),
-    getAllCourses: builder.query({
-      query: () => "courses/all",
-      providesTags: (result) =>
-        result
-          ? [
-              ...result.map(({ id }: { id: number }) => ({ type: "AllCourses", id })),
-              { type: "AllCourses", id: "LIST" },
-            ]
-          : [{ type: "AllCourses", id: "LIST" }],
+    searchCourses: builder.mutation<Course[], string>({
+      query: (query: string) => ({ url: `courses/search?query=${query}`, method: "GET" }),
     }),
     createCourse: builder.mutation({
       query: (body: createCourseTypes) => ({ url: "courses/create", method: "POST", body }),
@@ -75,7 +74,7 @@ export const coursesApi = createApi({
 export const {
   useGetCourseByIdQuery,
   useGetSignedCoursesQuery,
-  useGetAllCoursesQuery,
+  useSearchCoursesMutation,
   useCreateCourseMutation,
   useDeleteCourseMutation,
   useSubscribeToCourseMutation,

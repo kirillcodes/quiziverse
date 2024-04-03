@@ -4,14 +4,8 @@ import { Link, useNavigate } from "react-router-dom";
 import Logo from "@assets/images/logo-universe.png";
 import { useEffect, useState } from "react";
 import { CustomButton, CustomInput, Modal } from "@components";
-import { useCreateCourseMutation, useGetAllCoursesQuery } from "@store/api/coursesApi";
+import { useCreateCourseMutation, useSearchCoursesMutation } from "@store/api/coursesApi";
 import { useGetRoleQuery } from "@store/api/authApi";
-
-type Course = {
-  id: number;
-  title: string;
-  author: string;
-};
 
 const dropdownMenu = [
   {
@@ -28,29 +22,15 @@ const dropdownMenu = [
   },
 ];
 
-const filterCourses = (searchText: string, listOfCourses: Course[]): Course[] => {
-  if (!searchText) {
-    return listOfCourses;
-  }
-
-  const lowerSearchText = searchText.toLowerCase();
-
-  return listOfCourses.filter(
-    ({ title, id }) =>
-      title.toLowerCase().includes(lowerSearchText) || id.toString().includes(lowerSearchText)
-  );
-};
-
 export const Navbar = () => {
   const navigate = useNavigate();
   const [createCourseMutation] = useCreateCourseMutation();
-  const { data: allCourses = [] } = useGetAllCoursesQuery({});
+  const [searchCourses, { data: courses }] = useSearchCoursesMutation();
   const [isOpenDropdown, setIsOpenDropdown] = useState(false);
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [courseTitle, setCourseTitle] = useState("");
   const [courseDescription, setCourseDescription] = useState("");
   const [inputSearch, setInputSearch] = useState("");
-  const [courses, setCourses] = useState<Course[]>([]);
   const { data: roleData } = useGetRoleQuery({});
 
   const toggleOpenDropdown = () => {
@@ -91,13 +71,12 @@ export const Navbar = () => {
   };
 
   useEffect(() => {
-    const Debounce = setTimeout(() => {
-      const filteredCourses: Course[] = filterCourses(inputSearch, allCourses);
-      inputSearch.trim().length ? setCourses(filteredCourses) : setCourses([]);
-    }, 300);
+    const debounce = setTimeout(() => {
+      searchCourses(inputSearch);
+    }, 500);
 
-    return () => clearTimeout(Debounce);
-  }, [inputSearch, allCourses]);
+    return () => clearTimeout(debounce);
+  }, [inputSearch, searchCourses]);
 
   return (
     <nav className={scss.navbar}>
@@ -143,7 +122,7 @@ export const Navbar = () => {
           </abbr>
         ) : null}
       </div>
-      {inputSearch.trim() && courses.length && (
+      {inputSearch.trim() && courses && courses.length > 0 && (
         <div className={scss.dropdownCoursesList}>
           <ul>
             {courses.map(({ id, title, author }) => (
