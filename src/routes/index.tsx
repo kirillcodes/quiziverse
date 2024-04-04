@@ -8,6 +8,7 @@ import {
   NotFound,
   Root,
   UserResults,
+  Profile,
 } from "@pages";
 
 export const router = createBrowserRouter([
@@ -34,6 +35,10 @@ export const router = createBrowserRouter([
       {
         path: "course/:courseId/test/:testId/results/:studentId",
         element: <UserResults />,
+      },
+      {
+        path: "profile",
+        element: <Profile />,
       },
     ],
   },

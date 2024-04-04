@@ -6,3 +6,4 @@ export { CoursePage } from "./CoursePage";
 export { TestPage } from "./TestPage";
 export { ResultsPage } from "./ResultsPage";
 export { UserResults } from "./UserResults";
+export { Profile } from "./Profile";
