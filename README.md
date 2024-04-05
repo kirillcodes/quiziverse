@@ -33,8 +33,8 @@ VITE_SERVER_URL=localhost:8000
 
 <h2>LICENSE</h2>
 
-![LICENSE](https://github.com/kirillcodes/quiziverse?tab=MIT-1-ov-file#)
+[LICENSE](https://github.com/kirillcodes/quiziverse?tab=MIT-1-ov-file#)
 
 <h2>Related repositories</h2>
 
-![Quiziverse Backend](https://github.com/kirillcodes/quiziverse-backend)
+[Quiziverse Backend](https://github.com/kirillcodes/quiziverse-backend)
