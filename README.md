@@ -1,30 +1,40 @@
-# React + TypeScript + Vite
+<img src="https://i.ibb.co/HBDB1zG/quiziverse-github.png" alt="quiziverse-github" border="0" width="400px">
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+<h1>Overview</h1>
 
-Currently, two official plugins are available:
+Client part of the testing system for students of educational institutions
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+<h2>Features</h2>
 
-## Expanding the ESLint configuration
+- Search courses by keywords or ID
+- Create and delete a course
+- Subscribe to the course
+- Create a test with date and timer
+- Passing the test
+- View the results of test participants
+- Upload a unique course cover
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+<h2>Take a look</h2>
 
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
+```
+yarn install
+yarn run dev
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+<h2>Environment (.env)</h2>
+
+You can use own environment settings
+
+```env
+VITE_STUDENT_EMAIL_DOMAIN=student.domain.com
+VITE_TEACHER_EMAIL_DOMAIN=teacher.domain.com
+VITE_SERVER_URL=localhost:8000
+```
+
+<h2>LICENSE</h2>
+
+![LICENSE](https://github.com/kirillcodes/quiziverse?tab=MIT-1-ov-file#)
+
+<h2>Related repositories</h2>
+
+![Quiziverse Backend](https://github.com/kirillcodes/quiziverse-backend)
