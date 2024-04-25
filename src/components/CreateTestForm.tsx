@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { CreateQuestionForm } from "./CreateQuestionForm";
 import { CreateAnswerForm } from "./CreateAnswerForm";
-import { CreateTestDto, QuestionDto, AnswerDto } from "@dto/create-test.dto";
+import { CreateTest, Question, Answer } from "@types";
 import { useCreateTestMutation } from "@store/api/testsApi";
 import { CustomInput } from "./CustomInput";
 import { CustomButton } from "./CustomButton";
@@ -18,7 +18,7 @@ type Props = {
 export const CreateTestForm: React.FC<Props> = ({ courseId }) => {
   const [createTestMutation] = useCreateTestMutation();
   const [totalPoints, setTotalPoints] = useState(0);
-  const [formData, setFormData] = useState<CreateTestDto>({
+  const [formData, setFormData] = useState<CreateTest>({
     title: "",
     timeLimit: 0,
     startDate: new Date(),
@@ -51,14 +51,14 @@ export const CreateTestForm: React.FC<Props> = ({ courseId }) => {
     }));
   };
 
-  const addQuestion = (question: QuestionDto) => {
+  const addQuestion = (question: Question) => {
     setFormData((prevData) => ({
       ...prevData,
       questions: [...prevData.questions, question],
     }));
   };
 
-  const addAnswer = (answer: AnswerDto, questionIndex: number) => {
+  const addAnswer = (answer: Answer, questionIndex: number) => {
     setFormData((prevData) => ({
       ...prevData,
       questions: prevData.questions.map((question, index) => {

@@ -29,6 +29,7 @@ module.exports = {
           ["@routes", "src/routes"],
           ["@styles", "src/styles"],
           ["@hooks", "src/hooks"],
+          ["@types", "src/types"],
         ],
       },
     },
